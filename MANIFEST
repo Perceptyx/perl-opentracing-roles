@@ -1,0 +1,11 @@
+cpanfile
+lib/OpenTracing/Role/GlobalTracer.pm
+lib/OpenTracing/Role/Scope.pm
+lib/OpenTracing/Role/ScopeManager.pm
+lib/OpenTracing/Role/Span.pm
+lib/OpenTracing/Role/SpanContext.pm
+lib/OpenTracing/Role/Tracer.pm
+lib/OpenTracing/Role.pod
+Makefile.PL
+MANIFEST
+README.md

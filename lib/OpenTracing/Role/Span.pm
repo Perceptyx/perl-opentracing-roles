@@ -21,8 +21,6 @@ OpenTracing::Role::Span - Role for OpenTracing implementations.
 use Moo::Role;
 use MooX::HandlesVia;
 
-use OpenTracing::Implementation::DataDog::Utils qw/epoch_floatingpoint/;
-
 use Carp;
 use Types::Standard qw/HashRef Num Object Str Value/;
 use Types::Interface qw/ObjectDoesInterface/;
@@ -233,6 +231,25 @@ sub _set_context {
     
     return $self
 }
+
+
+
+=head2 epoch_floatingpoint
+
+Well, returns the time since 'epoch' with fractional seconds, as floating-point.
+
+=cut
+
+sub epoch_floatingpoint {
+    return scalar gettimeofday()
+}
+#
+# well, this is a bit off a silly idea:
+# some implentations may want nano-second accuracy, but floating point
+# computations using 64bits (IEEE) are only having 16 digits in the mantissa.
+# The number of nano-seconds since epoch is 19 digits that barely fits in a
+# signed 64 bit integer.
+
 
 
 BEGIN {

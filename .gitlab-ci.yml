@@ -1,0 +1,28 @@
+image: ubuntu:bionic
+
+stages:
+  - test
+  - build
+
+before_script:
+  - echo "Before script installation"
+  - apt update
+  - apt install libdevel-cover-perl libtap-formatter-junit-perl libjson-xs-perl libtest-most-perl libtest-mockmodule-perl cpanminus make -y
+
+test:unit:
+  stage: test
+  script:
+    # -prove -MDevel::Cover -l lib -r t/
+    - echo "No tests yet"
+  coverage: /Totals+.+s(d+.d+?)$/
+
+package:
+  stage: build
+  script:
+    - cpanm --installdeps .
+    - perl Makefile.PL
+    - make dist
+  artifacts:
+    paths:
+    - "*.tar.gz"
+    expire_in: 1 week

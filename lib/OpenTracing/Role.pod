@@ -1,0 +1,20 @@
+=head1 NAME
+
+OpenTracing::Role - common attributes and methods for OpenTracing
+
+=head1 VERSION
+
+0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+=head1 DESCRIPTION
+
+This package and related roles provide a set off attributes methods that will be
+required by a OpenTracing compliant implementation. If these are missing, then it may
+cause issues being compatible with other modules and or frameworks that need
+the deeper voodoo magic inside Opentracing.
+
+=cut

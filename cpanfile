@@ -1,3 +1,5 @@
+requires            "OpenTracing::Interface";
+
 requires            "Carp";
 requires            "Moo::Role";
 requires            "MooX::HandlesVia";

@@ -6,6 +6,7 @@ lib/OpenTracing/Role/Span.pm
 lib/OpenTracing/Role/SpanContext.pm
 lib/OpenTracing/Role/Tracer.pm
 lib/OpenTracing/Role.pod
+LICENSE.md
 Makefile.PL
 MANIFEST
 README.md

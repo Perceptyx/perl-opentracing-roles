@@ -1,6 +1,17 @@
 CHANGE LOG
 ==========
 
+
+2020-01-14 - v0.03
+------------------
+
+Public Release for CPAN
+
+### Added
+    - use_ok test
+    - LICENSE
+
+
 2019-12-18 - v0.02
 ------------------
 

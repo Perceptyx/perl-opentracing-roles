@@ -105,7 +105,10 @@ sub start_active_span {
     my $span = $self->start_span( $operation_name => $opts );
     
     my $scope_manager = $self->get_scope_manager();
-    my $scope = $scope_manager->activate_span( $span, $finish_span_on_close );
+    
+    my $scope = $scope_manager->activate_span( $span,
+        finish_span_on_close => $finish_span_on_close
+    );
     
     return $scope
 }

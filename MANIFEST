@@ -13,3 +13,8 @@ Makefile.PL
 MANIFEST
 README.md
 t/00_use_ok.t
+t/Scope/01_interface_ok.t
+t/ScopeManager/01_interface_ok.t
+t/Span/01_interface_ok.t
+t/SpanContext/01_interface_ok.t
+t/Tracer/01_interface_ok.t

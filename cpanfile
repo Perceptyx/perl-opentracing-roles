@@ -10,4 +10,5 @@ requires            "Types::Standard";
 
 on 'test' => sub {
     requires            "Test::Most";
+    requires            "Test::Interface";
 };

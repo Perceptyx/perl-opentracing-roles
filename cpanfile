@@ -10,6 +10,7 @@ requires            "Types::Interface";
 requires            "Types::Standard";
 
 on 'test' => sub {
+    requires            "Sub::Override";
     requires            "Test::Most";
     requires            "Test::Interface";
 };

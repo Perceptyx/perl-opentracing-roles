@@ -102,7 +102,7 @@ sub start_active_span {
             : !undef
     ; # use 'truthness' of param if provided, or set to 'true' otherwise
     
-    my $span = $self->start_span( $operation_name => $opts );
+    my $span = $self->start_span( $operation_name => %$opts );
     
     my $scope_manager = $self->get_scope_manager();
     

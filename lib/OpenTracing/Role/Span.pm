@@ -22,6 +22,7 @@ use Moo::Role;
 use MooX::HandlesVia;
 
 use Carp;
+use Time::HiRes qw/gettimeofday/;
 use Types::Standard qw/HashRef Num Object Str Value/;
 use Types::Interface qw/ObjectDoesInterface/;
 

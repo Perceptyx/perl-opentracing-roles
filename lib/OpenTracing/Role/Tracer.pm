@@ -131,7 +131,11 @@ sub start_span {
     
 #   $child_of->does(') ?
     
-    my $context = defined $child_of && $child_of->does('OpenTracing::Role::SpanContext') ?
+    my $context =
+        defined $child_of
+        && 
+        $child_of->does('OpenTracing::Interface::SpanContext')
+        ?
         $child_of : $self->get_active_span_context();
     
     my $span = $self->build_span(

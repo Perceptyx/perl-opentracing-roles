@@ -81,7 +81,7 @@ has tags => (
 
 has context => (
     is              => 'ro',
-    isa             => ObjectDoesInterface['OpenTracing::Role::SpanContext'],
+    isa             => ObjectDoesInterface['OpenTracing::Interface::SpanContext'],
     reader          => 'get_context',
 #   writer          => '_set_context',
     required        => 1, # either from Span->get_context or SpanContext self

@@ -1,4 +1,4 @@
-requires            "OpenTracing::Interface";
+requires            "OpenTracing::Interface", '0.11';
 
 requires            "Carp";
 requires            "Moo::Role";

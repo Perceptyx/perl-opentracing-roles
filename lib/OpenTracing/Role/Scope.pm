@@ -29,6 +29,10 @@ use Moo::Role;
 use Types::Interface qw/ObjectDoesInterface/;
 use Types::Standard qw/Bool/;
 
+use Carp;
+
+
+
 =head1 DESCRIPTION
 
 This is a Role for OpenTracing implenetations that are compliant with the
@@ -53,21 +57,29 @@ has finish_span_on_close => (
 
 
 
+has closed => (
+    is              => 'rwp',
+    isa             => Bool,
+    init_arg        => undef,
+    default         => !!undef,
+);
+
+
+
 around close => sub {
     my $orig = shift;
     my $self = shift;
     
-#   croak "Can't close an already closed scope"
-#       if $self->_has_closed;
-#   
-#   $self->_set_closed_time( epoch_floatingpoint() );
+    croak "Can't close an already closed scope"
+        if $self->closed;
+    
+    $self->_set_closed( !undef );
     
     $self->get_span->finish
         if $self->finish_span_on_close;
     
     $orig->( $self => @_ );
 #   return $self->get_scope_manager()->deactivate_scope( $self );
-    
     
 };
 

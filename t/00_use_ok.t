@@ -5,7 +5,6 @@ BEGIN {
 
     use_ok('OpenTracing::Role');
     
-    use_ok('OpenTracing::Role::Scope');
     use_ok('OpenTracing::Role::ScopeManager');
     use_ok('OpenTracing::Role::Span');
     use_ok('OpenTracing::Role::SpanContext');

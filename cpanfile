@@ -14,6 +14,7 @@ requires            "Types::Standard";
 on 'test' => sub {
     requires            "Sub::Override";
     requires            "Test::Most";
+    requires            "Test::Warn";
     requires            "Test::Interface";
     requires            "Test::OpenTracing::Interface";
 };

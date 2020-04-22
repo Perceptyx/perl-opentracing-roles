@@ -28,7 +28,10 @@ with 'OpenTracing::Role::Scope';
 #
 sub close {
     push @main::close_arguments, [ @_ ];
-    return;
+    
+    my $self = shift;
+    
+    return $self;
 }
 
 sub get_span { ... }

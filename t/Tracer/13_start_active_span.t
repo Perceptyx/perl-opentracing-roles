@@ -63,7 +63,7 @@ with 'OpenTracing::Role::Scope';
 
 # add required subs
 #
-sub close { ... }
+sub close { $_[0]->_set_closed( !undef); $_[0] }
 
 
 
@@ -86,7 +86,8 @@ my $test_tracer = MyTest::Tracer->new(
     scope_manager => $mocked_scope_manager,
 );
 
-$test_tracer->start_active_span( 'my_operation_name', ignore_active_span => 1 );
+$test_tracer->start_active_span( 'my_operation_name', ignore_active_span => 1 )
+    ->close;
 
 cmp_deeply(
     \@start_span_arguments,

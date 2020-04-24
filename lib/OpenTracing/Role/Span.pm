@@ -28,6 +28,7 @@ use Moo::Role;
 use MooX::HandlesVia;
 
 use Carp;
+use Data::GUID;
 use Time::HiRes qw/gettimeofday/;
 use Types::Standard qw/HashRef Num Object Str Value/;
 use Types::Interface qw/ObjectDoesInterface/;
@@ -45,6 +46,14 @@ leads to undefined behavior (but not returning an exception).
 
 =cut
 
+
+
+has span_id => (
+    is              => 'ro',
+#   isa             => Uuid, # not restraints here, do so when consuming this
+    init_arg        => undef,
+    default         => sub { Data::GUID->new },
+);
 
 
 has operation_name => (

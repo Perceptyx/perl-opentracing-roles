@@ -1,6 +1,7 @@
 requires            "OpenTracing::Interface", '>= 0.18, <0.202.0';
 
 requires            "Carp";
+requires            "Data::GUID";
 requires            "Moo::Role";
 requires            "MooX::Enumeration";
 requires            "MooX::HandlesVia";

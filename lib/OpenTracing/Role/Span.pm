@@ -231,6 +231,14 @@ sub duration {
 
 
 
+has child_of => (
+    is => 'ro',
+    isa =>Object, # does Span or does SpanContext
+    required => 1,
+);
+
+
+
 # _set_context
 #
 # you really shouldn't change the context yourself, only on instantiation

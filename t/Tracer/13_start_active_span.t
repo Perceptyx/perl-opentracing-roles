@@ -9,7 +9,7 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 # we want to capture the arguments passed into `start_span`
 # so, we use the role and override the specific method
-# and capture them the argument
+# and capture them the arguments
 
 my @start_span_arguments;
 
@@ -20,7 +20,7 @@ $override->replace( 'OpenTracing::Role::Tracer::start_span' =>
     sub {
         my $class = shift;
         
-        @start_span_arguments = @_;
+        push @start_span_arguments, [ @_ ];
         
         bless {}, 'MyMock::Span'
     }
@@ -82,18 +82,45 @@ my $test_tracer = MyTest::Tracer->new(
     scope_manager => $mock_scope_manager,
 );
 
+lives_ok {
+    $test_tracer
+        ->start_active_span( 'my_operation_name',
+            ignore_active_span => 1,
+            child_of           => $mock_span_context,
+            start_time         => 1.25,
+            tags               => { foo => 1, bar => 6 },
+        )
+        ->close;
+    
+    $test_tracer
+        ->start_active_span( 'my_operation_next',
+            finish_span_on_close => 0,
+        )->close;
+} "Can call 'start_active_span'";
+
+is( shift @{ $start_span_arguments[0] }, 'my_operation_name',
+    "... and pass from 'start_active_span' to 'start_span' the 'operation name'"
 );
 
-$test_tracer->start_active_span( 'my_operation_name', ignore_active_span => 1 )
-    ->close;
+cmp_deeply(
+    { @{$start_span_arguments[0]} },
+    {
+        ignore_active_span => 1,
+        child_of           => $mock_span_context,
+        start_time         => 1.25,
+        tags               => { foo => 1, bar => 6 },
+    },
+    "... and pass remaining options"
+);
+
+is( shift @{ $start_span_arguments[1] }, 'my_operation_next',
+    "... and pass from 'start_active_span' to 'start_span' the 'operation next'"
+);
 
 cmp_deeply(
-    \@start_span_arguments,
-    [
-        'my_operation_name',
-        ignore_active_span => 1
-    ],
-    "Passes on the right arguments from 'start_active_span' to 'start_span'"
+    { @{$start_span_arguments[1]} },
+    { },
+    "... and pass not 'finish_span_on_close'"
 );
 
 #print "@start_span_arguments\n";

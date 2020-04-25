@@ -24,19 +24,15 @@ with 'OpenTracing::Role::SpanContext';
 
 package main;
 
-my $test_span_context = MyTest::SpanContext->new();
-
 my $test_span;
-
 my $start_time = time();
-
 
 $test_span = MyTest::Span->new(
     operation_name => 'test',
-    context        => $test_span_context,
+    context        => bless( {}, 'MyTest::SpanContext' ),
     start_time     => 0,
+    child_of       => bless( {}, 'MyTest::Span' ),
 );
-
 
 $test_span->finish( );
 

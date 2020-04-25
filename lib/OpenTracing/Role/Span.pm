@@ -56,6 +56,7 @@ has span_id => (
 );
 
 
+
 has operation_name => (
     is              => 'rwp',
     isa             => Str,
@@ -236,6 +237,21 @@ has child_of => (
     isa =>Object, # does Span or does SpanContext
     required => 1,
 );
+
+
+
+sub parent_span_id {
+    my $self = shift;
+    
+    my $parent = $self->{ child_of };
+    return unless $parent->does('OpenTracing::Role::Span');
+    
+    return $parent->span_id
+}
+#
+# This may not be the right way to implement it, for the `child_of` attribute
+# may not be such a good idea, maybe it should use references, but not sure how
+# those are used
 
 
 

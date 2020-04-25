@@ -22,10 +22,7 @@ $override->replace( 'OpenTracing::Role::Tracer::start_span' =>
         
         @start_span_arguments = @_;
         
-        return MyMock::Span->new(
-            operation_name => 'test',
-            context        => MyMock::SpanContext->new(),
-        );
+        bless {}, 'MyMock::Span'
     }
 );
 
@@ -61,8 +58,6 @@ package MyMock::Scope;
 use Moo;
 with 'OpenTracing::Role::Scope';
 
-# add required subs
-#
 sub close { $_[0]->_set_closed( !undef); $_[0] }
 
 
@@ -73,17 +68,20 @@ use Moo;
 
 with 'OpenTracing::Role::ScopeManager';
 
-sub activate_span { MyMock::Scope->new() }
-
+sub activate_span { bless {}, 'MyMock::Scope' }
 sub get_active_scope { ... }
 
 
 
 package main;
 
-my $mocked_scope_manager = MyMock::ScopeManager->new();
+my $mock_scope_manager = bless {}, 'MyMock::ScopeManager';
+my $mock_span_context  = bless {}, 'MyMock::SpanContext';
+
 my $test_tracer = MyTest::Tracer->new(
-    scope_manager => $mocked_scope_manager,
+    scope_manager => $mock_scope_manager,
+);
+
 );
 
 $test_tracer->start_active_span( 'my_operation_name', ignore_active_span => 1 )

@@ -24,20 +24,16 @@ with 'OpenTracing::Role::SpanContext';
 
 package main;
 
-my $test_span_context = MyTest::SpanContext->new();
-
 my $test_span;
-
 my $start_time = time();
-
 
 lives_ok {
     $test_span = MyTest::Span->new(
         operation_name => 'test',
-        context        => $test_span_context
+        context        => bless( {}, 'MyTest::SpanContext' ),
+        child_of       => bless( {}, 'MyTest::Span' ),
     );
 } "Can create new 'Span'";
-
 
 # note, perl time works with integers, the Span object should work with floats
 #

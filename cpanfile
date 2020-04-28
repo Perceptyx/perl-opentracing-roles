@@ -14,7 +14,9 @@ requires            "Types::Standard";
 
 on 'test' => sub {
     requires            "Sub::Override";
+    requires            "Test::Deep", '>= 1.130';
     requires            "Test::Most";
+    requires            "Test::MockObject::Extends";
     requires            "Test::Warn";
     requires            "Test::Interface";
     requires            "Test::OpenTracing::Interface";

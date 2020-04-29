@@ -8,35 +8,25 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 
 
-my $some_span_context  = bless {}, 'MyStub::SpanContext';
-my $some_span          = bless {}, 'MyStub::Span';
-
-# mock the methods we're interested in
-#
-my $mock_scope_manager = Test::MockObject::Extends->new(
-    MyStub::ScopeManager->new()
-)->mock( 'activate_span' =>
-    sub { bless {}, 'MyStub::Scope' }
-);
-
-my $mock_tracer = Test::MockObject::Extends->new(
-    MyStub::Tracer->new(
-        scope_manager => $mock_scope_manager,
-    )
-)->mock( 'start_span' =>
-    sub {
-        $some_span
-    }
-);
-
-
-
 subtest "Pass through to 'start_span' with known options" => sub {
     
     my ($self, $call_name, $call_args);
     
-    $mock_tracer->clear();
-    $mock_scope_manager->clear();
+    my $stub_scope_manager = Test::MockObject::Extends->new(
+        MyStub::ScopeManager->new()
+    )->mock( 'activate_span' =>
+        sub { bless {}, 'MyStub::Scope' }
+    );
+    
+    my $mock_tracer = Test::MockObject::Extends->new(
+        MyStub::Tracer->new(
+            scope_manager => $stub_scope_manager,
+        )
+    )->mock( 'start_span' =>
+        sub { bless {}, 'MyStub::Span' }
+    );
+    
+    my $some_span_context  = bless {}, 'MyStub::SpanContext';
     
     
     
@@ -86,8 +76,19 @@ subtest "Pass through to 'start_span' without any options" => sub {
     
     my ($self, $call_name, $call_args);
     
-    $mock_tracer->clear();
-    $mock_scope_manager->clear();
+    my $stub_scope_manager = Test::MockObject::Extends->new(
+        MyStub::ScopeManager->new()
+    )->mock( 'activate_span' =>
+        sub { bless {}, 'MyStub::Scope' }
+    );
+    
+    my $mock_tracer = Test::MockObject::Extends->new(
+        MyStub::Tracer->new(
+            scope_manager => $stub_scope_manager,
+        )
+    )->mock( 'start_span' =>
+        sub { bless {}, 'MyStub::Span' }
+    );
     
     
     
@@ -121,10 +122,26 @@ subtest "Pass through to 'start_span' without any options" => sub {
 
 subtest "Private option 'finish_span_on_close'" => sub {
     
+
     my ($self, $call_name, $call_args);
     
-    $mock_tracer->clear();
-    $mock_scope_manager->clear();
+    my $some_span = bless {}, 'MyStub::Span';
+    
+    my $mock_scope_manager = Test::MockObject::Extends->new(
+        MyStub::ScopeManager->new()
+    )->mock( 'activate_span' =>
+        sub { bless {}, 'MyStub::Scope' }
+    );
+    
+    my $mock_tracer = Test::MockObject::Extends->new(
+        MyStub::Tracer->new(
+            scope_manager => $mock_scope_manager,
+        )
+    )->mock( 'start_span' =>
+        sub {
+            $some_span
+        }
+    );
     
     
     

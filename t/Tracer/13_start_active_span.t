@@ -8,8 +8,8 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 
 
-my $mock_span_context  = bless {}, 'MyStub::SpanContext';
-my $mock_span          = bless {}, 'MyStub::Span';
+my $some_span_context  = bless {}, 'MyStub::SpanContext';
+my $some_span          = bless {}, 'MyStub::Span';
 
 # mock the methods we're interested in
 #
@@ -25,7 +25,7 @@ my $mock_tracer = Test::MockObject::Extends->new(
     )
 )->mock( 'start_span' =>
     sub {
-        $mock_span
+        $some_span
     }
 );
 
@@ -44,7 +44,7 @@ subtest "Pass through to 'start_span' with known options" => sub {
         $mock_tracer
             ->start_active_span( 'some operation name',
                 ignore_active_span   => 1,
-                child_of             => $mock_span_context,
+                child_of             => $some_span_context,
                 start_time           => 1.25,
                 tags                 => { foo => 1, bar => 6 },
                 finish_span_on_close => 1,
@@ -71,7 +71,7 @@ subtest "Pass through to 'start_span' with known options" => sub {
         { @{$call_args} },
         {
             ignore_active_span => 1,
-            child_of           => $mock_span_context,
+            child_of           => $some_span_context,
             start_time         => 1.25,
             tags               => { foo => 1, bar => 6 },
         },
@@ -144,7 +144,7 @@ subtest "Private option 'finish_span_on_close'" => sub {
         "... with the invocant is the 'MyStub::ScopeManager'"
     );
     
-    is( shift @{$call_args}, $mock_span,
+    is( shift @{$call_args}, $some_span,
         "... with the 'MyStub::Span' from previous call"
     );
     

@@ -157,7 +157,14 @@ sub start_span {
     my $context =
         defined $child_of
         && 
-        $child_of->does('OpenTracing::Interface::SpanContext')
+#       $child_of->does('OpenTracing::Interface::SpanContext')
+        $child_of->can('with_baggage_item')
+        &&
+        $child_of->can('get_baggage_item')
+        #
+        # 'does' does not work, then just check on most essential methods
+        # TODO: use OpenTracing::Types
+        #
         ?
         $child_of : $self->get_active_span_context();
     

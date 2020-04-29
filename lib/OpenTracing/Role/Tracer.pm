@@ -97,9 +97,17 @@ sub get_active_span_context {
 
 sub start_active_span {
     my $self = shift;
+    #
+    # TODO: croak when even number of arguments, after shifting invocant
+    #       first must be a operation name
+    #       then key / value pairs
+    
     my $operation_name = shift
         or croak "Missing required operation_name";
     my $opts = { @_ };
+    #
+    # TODO: only check on 'finish_span_on_close'
+    #       leave all other checks to 'start_span'
     
     # remove the `finish_span_on_close` option, which is for this method only! 
     my $finish_span_on_close = 
@@ -109,6 +117,8 @@ sub start_active_span {
     ; # use 'truthness' of param if provided, or set to 'true' otherwise
     
     my $span = $self->start_span( $operation_name => %$opts );
+    #
+    # TODO: use 'try { ... } catch { croak }'
     
     my $scope_manager = $self->get_scope_manager();
     
@@ -123,6 +133,11 @@ sub start_active_span {
 
 sub start_span {
     my $self = shift;
+    #
+    # TODO: croak when even number of arguments, after shifting invocant
+    #       first must be a operation name
+    #       then key / value pairs
+    
     my $operation_name = shift
         or croak "Missing required operation_name";
     my $opts = { @_ };
@@ -131,6 +146,8 @@ sub start_span {
     my $ignore_active_span = delete $opts->{ ignore_active_span };
     my $child_of           = delete $opts->{ child_of };
     my $tags               = delete $opts->{ tags };
+    #
+    # TODO: croak whit remaining options
     
     $child_of //= $self->get_active_span()
         unless $ignore_active_span;
@@ -151,6 +168,11 @@ sub start_span {
         tags           => $tags,
         context        => $context,
     );
+    #
+    # we should get rid of passing 'child_of' or the not exisitng 'follows_from'
+    # these are merely helpers to define 'references'.
+    #
+    # TODO: use 'try { ... } catch { croak }'
     
     return $span
 }

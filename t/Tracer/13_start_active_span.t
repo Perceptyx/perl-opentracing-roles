@@ -225,11 +225,16 @@ done_testing();
 
 
 
+# MyStub::...
+#
+# The following packages are stubs with minimal implementation that only
+# satisfy required subroutines so roles can be applied.
+# Any subroutines under testing probably need mocking
+# Test::MockObject::Extends is your friend
+
 package MyStub::Tracer;
 use Moo;
 
-# add required subs
-#
 sub _build_scope_manager { ... }
 sub build_span           { ... }
 sub extract_context      { ... }

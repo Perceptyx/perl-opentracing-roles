@@ -13,4 +13,5 @@ on 'test' => sub {
     requires            "Sub::Override";
     requires            "Test::Most";
     requires            "Test::Interface";
+    requires            "Test::OpenTracing::Interface";
 };

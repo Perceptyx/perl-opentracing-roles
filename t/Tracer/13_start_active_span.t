@@ -1,5 +1,4 @@
 use Test::Most;
-use Sub::Override;
 use Test::Deep qw/true false/;
 use Test::MockObject::Extends;
 

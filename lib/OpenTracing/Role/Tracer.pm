@@ -167,6 +167,10 @@ sub start_span {
         #
         ?
         $child_of : $self->get_active_span_context();
+        #
+        # TODO: figure out why we want to get the active span it's context
+        #       what if we have passed in a span, should we take it's context?
+        #       is it more relevant to have the 'active context' at all times?
     
     my $span = $self->build_span(
         operation_name => $operation_name,

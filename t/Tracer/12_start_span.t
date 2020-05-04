@@ -2,6 +2,21 @@ use Test::Most tests => 1;
 use Test::Deep qw/true false/;
 use Test::MockObject::Extends;
 
+=head1 DESCRIPTION
+
+Check that this role does all the munging and prepating before calling
+C<build_span>
+
+=head1 WARNING
+
+This test is incomplete, far from complete. Reason for this is that the
+interface description, and the usage of C<ContextReference> is unclear and not
+implemented.
+
+This needs to be revisited once this is role has been refactored.
+
+=cut
+
 $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 #
 # This breaks if it would be set to 0 externally, so, don't do that!!!
@@ -18,6 +33,20 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 # also, rethink about 'operation_name' being a named parameter or not
 # YES, we want things explicit!
 
+
+
+# Hmmmm....
+#
+# We either have or don't have a 'child_of'
+#
+# - if we have one, (Span or SpanContext) then
+#   - pass on the child given
+#   - if it is a Span, we need to get it's SpanContext
+#   - pass on the SpanContext
+
+# TODO: wait for the 'reference' attribute or however it will be defined
+#       The current API description is bad and it uses 'shortcuts' like
+#       'child_of' to create a ContextReference.
 
 
 subtest "Pass through to 'build_span' with known options" => sub {

@@ -66,16 +66,14 @@ requires 'inject_context';
 sub get_active_span {
     my $self = shift;
     
-    my $span = try {
-        $self->get_scope_manager->get_active_scope->get_span
-    } catch {
-        return undef
-    };
+    my $scope_manager = $self->get_scope_manager
+        or croak "Can't get a 'ScopeManager'";
     
-    return $span
+    my $scope = $scope_manager->get_active_scope
+        or return;
+    
+    return $scope->get_span;
 }
-#
-# this is not really a good design but so convenient.
 
 
 

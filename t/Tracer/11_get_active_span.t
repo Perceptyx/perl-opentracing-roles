@@ -41,6 +41,31 @@ subtest "All happy ..." => sub {
 
 
 
+subtest "No Active Scope" => sub {
+    
+    my $mock_scope_manager = bless {
+        active_scope => undef,
+    }, 'MyStub::ScopeManager';
+
+    my $mock_tracer = Test::MockObject::Extends->new(
+        MyStub::Tracer->new(
+            scope_manager => $mock_scope_manager
+        )
+    );
+    
+TODO: {
+    
+    local $TODO = "Wait for v0.19 of OT::Interface, allow for 'undef'";
+    
+    is $mock_tracer->get_active_span(), undef,
+        "Does return `undef` without complaints";
+    
+    }
+    
+};
+
+
+
 done_testing();
 
 
@@ -84,7 +109,7 @@ package MyStub::ScopeManager;
 use Moo;
 
 sub activate_span { ... }
-sub get_active_scope { ... }
+sub get_active_scope { $_[0]->{ active_scope }; }
 
 BEGIN { with 'OpenTracing::Role::ScopeManager'; }
 

@@ -1,4 +1,4 @@
-use Test::Most;
+use Test::Most tests => 1;
 use Test::Deep qw/true false/;
 use Test::MockObject::Extends;
 
@@ -22,6 +22,8 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 subtest "Pass through to 'build_span' with known options" => sub {
     
+    plan tests => 4;
+    
     my ($self, $call_name, $call_args);
     
     my $mock_tracer = Test::MockObject::Extends->new(
@@ -44,8 +46,9 @@ subtest "Pass through to 'build_span' with known options" => sub {
                 start_time           => 1.25,
                 tags                 => { foo => 1, bar => 6 },
             );
-    } "Can call 'start_span' with known options";
+    } "Can call 'start_span' with known options"
     
+    or return;
     
     
     ($call_name, $call_args) = $mock_tracer->next_call();

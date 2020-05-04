@@ -13,6 +13,32 @@ we do return that Span, `undef` otherwise
 
 =cut
 
+subtest "All happy ..." => sub {
+    
+    my $some_span = bless {}, 'MyStub::Span';
+    
+    my $mock_scope = Test::MockObject::Extends->new(
+        bless {}, 'MyStub::Scope'
+    )->mock( get_span =>
+        sub { $some_span }
+    );
+    
+    my $mock_scope_manager = Test::MockObject::Extends->new(
+        bless {}, 'MyStub::ScopeManager'
+    )->mock( get_active_scope =>
+        sub { $mock_scope }
+    );
+    
+    my $mock_tracer = Test::MockObject::Extends->new(
+        MyStub::Tracer->new(
+            scope_manager => $mock_scope_manager,
+        )
+    );
+    
+    is $mock_tracer->get_active_span(), $some_span,
+        "Does return the expected span"
+};
+
 
 
 done_testing();

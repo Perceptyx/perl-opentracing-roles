@@ -32,6 +32,7 @@ t/SpanContext/01_can_all_ok.t
 t/SpanContext/01_interface_ok.t
 t/Tracer/01_can_all_ok.t
 t/Tracer/01_interface_ok.t
+t/Tracer/10_get_scope_manager.t
 t/Tracer/11_get_active_span.t
 t/Tracer/12_start_span.t
 t/Tracer/13_start_active_span.t

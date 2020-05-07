@@ -1,5 +1,6 @@
 CHANGES
 cpanfile
+lib/OpenTracing/Role/ContextReference.pm
 lib/OpenTracing/Role/GlobalTracer.pm
 lib/OpenTracing/Role/Scope.pm
 lib/OpenTracing/Role/ScopeManager.pm
@@ -13,6 +14,9 @@ Makefile.PL
 MANIFEST
 README.md
 t/00_use_ok.t
+t/ContextReference/00_use_ok.t
+t/ContextReference/01_can_all_ok.t
+t/ContextReference/03_helpers.t
 t/Scope/01_can_all_ok.t
 t/Scope/01_interface_ok.t
 t/ScopeManager/01_can_all_ok.t

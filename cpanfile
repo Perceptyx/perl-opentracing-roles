@@ -1,4 +1,4 @@
-requires            "OpenTracing::Interface", '>= 0.18';
+requires            "OpenTracing::Interface", '>= 0.19';
 
 requires            "Carp";
 requires            "Data::GUID";

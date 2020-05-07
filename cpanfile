@@ -2,7 +2,9 @@ requires            "OpenTracing::Interface", '>= 0.18';
 
 requires            "Carp";
 requires            "Moo::Role";
+requires            "MooX::Enumeration";
 requires            "MooX::HandlesVia";
+requires            "MooX::ProtectedAttributes";
 requires            "Sub::Trigger::Lock";
 requires            "Time::HiRes";
 requires            "Try::Tiny";

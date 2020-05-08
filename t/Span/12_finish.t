@@ -57,6 +57,33 @@ subtest "Explicit finish time" => sub {
 
 
 
+subtest "Finishing only once" => sub {
+    
+    my $test_span;
+    
+    $test_span = MyStub::Span->new(
+        operation_name => 'test',
+        context        => bless( {}, 'MyStub::SpanContext' ),
+        child_of       => bless( {}, 'MyStub::Span' ),
+    );
+    
+    ok ! $test_span->has_finished(),
+        "Span has not been finished yet";
+    
+    $test_span->finish( );
+    
+    ok $test_span->has_finished(),
+        "... but has, after 'finish' has been called";
+    
+    throws_ok {
+        $test_span->finish( )
+    } qr/Span has already been finished/,
+        "... and can not 'finish' again";
+    
+};
+
+
+
 done_testing();
 
 

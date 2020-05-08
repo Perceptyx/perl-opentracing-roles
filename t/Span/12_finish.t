@@ -7,8 +7,9 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 
 
+use Test::Time::HiRes time => 256.875;
+
 my $test_span;
-my $start_time = time();
 
 $test_span = MyStub::Span->new(
     operation_name => 'test',
@@ -17,23 +18,15 @@ $test_span = MyStub::Span->new(
     child_of       => bless( {}, 'MyStub::Span' ),
 );
 
+Test::Time::HiRes->set_time( 512.125 );
+
 $test_span->finish( );
 
-# note, perl time works with integers, the Span object should work with floats
-#
-ok( between( $test_span->finish_time, $start_time, $start_time +1 ),
-    "Span finished within 1 second"
-);
-
+is $test_span->finish_time +0, 512.125,      # Test::Time::HiRes returns a string
+    "... and has the correct finish_time";
 
 
 done_testing();
-
-
-
-sub between {
-    return ($_[0] >= $_[1]) && ($_[0] <= $_[2])
-}
 
 
 

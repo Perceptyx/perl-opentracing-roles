@@ -84,6 +84,48 @@ subtest "Finishing only once" => sub {
 
 
 
+subtest "Finishing blocks other methods" => sub {
+    
+    my $test_span;
+    
+    $test_span = MyStub::Span->new(
+        operation_name => 'test',
+        context        => bless( {}, 'MyStub::SpanContext' ),
+        child_of       => bless( {}, 'MyStub::Span' ),
+    )->finish;
+    
+    ok $test_span->has_finished(),
+        "Span has finished";
+    
+    throws_ok {
+        $test_span->overwrite_operation_name( 'foo' )
+    } qr/.* finished span/,
+        "... and can not call 'overwrite_operation_name'";
+    
+    throws_ok {
+        $test_span->set_tag( foo => 'bar' )
+    } qr/.* finished span/,
+        "... and can not call 'set_tag'";
+    
+    throws_ok {
+        $test_span->log_data( key1 => 'value1', key2 => 'value2' )
+    } qr/.* finished span/,
+        "... and can not call 'log_data'";
+    
+    throws_ok {
+        $test_span->set_baggage_item( foo => 'bar' )
+    } qr/.* finished span/,
+        "... and can not call 'set_baggage_item'";
+    
+    throws_ok {
+        $test_span->set_baggage_items( key1 => 'value1', key2 => 'value2' )
+    } qr/.* finished span/,
+        "... and can not call 'set_baggage_items'";
+    
+};
+
+
+
 done_testing();
 
 

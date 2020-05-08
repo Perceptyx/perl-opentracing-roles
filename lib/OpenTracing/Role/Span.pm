@@ -124,7 +124,7 @@ sub overwrite_operation_name {
 sub finish {
     my $self = shift;
     
-    croak "Tag has already been finished"
+    croak "Span has already been finished"
         if $self->has_finished;
     
     my $epoch_timestamp = shift // epoch_floatingpoint();

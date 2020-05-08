@@ -18,5 +18,6 @@ on 'test' => sub {
     requires            "Test::MockObject::Extends";
     requires            "Test::Most";
     requires            "Test::OpenTracing::Interface";
+    requires            "Test::Time::HiRes";
     requires            "Test::Warn";
 };

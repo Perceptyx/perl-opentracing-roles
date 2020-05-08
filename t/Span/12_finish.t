@@ -6,23 +6,6 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 # This breaks if it would be set to 0 externally, so, don't do that!!!
 
 
-package MyTest::Span;
-
-use Moo;
-
-with 'OpenTracing::Role::Span';
-
-
-
-package MyTest::SpanContext;
-
-use Moo;
-
-with 'OpenTracing::Role::SpanContext';
-
-
-
-package main;
 
 my $test_span;
 my $start_time = time();
@@ -51,6 +34,22 @@ done_testing();
 sub between {
     return ($_[0] >= $_[1]) && ($_[0] <= $_[2])
 }
+
+
+
+package MyTest::Span;
+
+use Moo;
+
+BEGIN { with 'OpenTracing::Role::Span' }
+
+
+
+package MyTest::SpanContext;
+
+use Moo;
+
+BEGIN { with 'OpenTracing::Role::SpanContext' }
 
 
 

@@ -18,16 +18,18 @@ subtest "Default behaviour" => sub {
     $test_span = MyStub::Span->new(
         operation_name => 'test',
         context        => bless( {}, 'MyStub::SpanContext' ),
-        start_time     => 0,
         child_of       => bless( {}, 'MyStub::Span' ),
     );
     
     Test::Time::HiRes->set_time( 256.875 );
     
-    $test_span->finish( );
+    lives_ok {
+        $test_span->finish( );
+    } "Can finish a Span without timestamp";
     
     is $test_span->finish_time +0, 256.875,
         "... and has the correct finish_time";
+    
 };
 
 

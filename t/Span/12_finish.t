@@ -10,11 +10,11 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 my $test_span;
 my $start_time = time();
 
-$test_span = MyTest::Span->new(
+$test_span = MyStub::Span->new(
     operation_name => 'test',
-    context        => bless( {}, 'MyTest::SpanContext' ),
+    context        => bless( {}, 'MyStub::SpanContext' ),
     start_time     => 0,
-    child_of       => bless( {}, 'MyTest::Span' ),
+    child_of       => bless( {}, 'MyStub::Span' ),
 );
 
 $test_span->finish( );
@@ -37,7 +37,7 @@ sub between {
 
 
 
-package MyTest::Span;
+package MyStub::Span;
 
 use Moo;
 
@@ -45,7 +45,7 @@ BEGIN { with 'OpenTracing::Role::Span' }
 
 
 
-package MyTest::SpanContext;
+package MyStub::SpanContext;
 
 use Moo;
 

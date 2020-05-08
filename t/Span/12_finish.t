@@ -7,23 +7,29 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 
 
-use Test::Time::HiRes time => 256.875;
+use Test::Time::HiRes;
 
-my $test_span;
 
-$test_span = MyStub::Span->new(
-    operation_name => 'test',
-    context        => bless( {}, 'MyStub::SpanContext' ),
-    start_time     => 0,
-    child_of       => bless( {}, 'MyStub::Span' ),
-);
 
-Test::Time::HiRes->set_time( 512.125 );
+subtest "Default behaviour" => sub {
+    
+    my $test_span;
+    
+    $test_span = MyStub::Span->new(
+        operation_name => 'test',
+        context        => bless( {}, 'MyStub::SpanContext' ),
+        start_time     => 0,
+        child_of       => bless( {}, 'MyStub::Span' ),
+    );
+    
+    Test::Time::HiRes->set_time( 256.875 );
+    
+    $test_span->finish( );
+    
+    is $test_span->finish_time +0, 256.875,
+        "... and has the correct finish_time";
+};
 
-$test_span->finish( );
-
-is $test_span->finish_time +0, 512.125,      # Test::Time::HiRes returns a string
-    "... and has the correct finish_time";
 
 
 done_testing();

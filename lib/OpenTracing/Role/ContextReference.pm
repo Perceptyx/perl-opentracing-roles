@@ -11,7 +11,7 @@ use MooX::Enumeration;
 use MooX::ProtectedAttributes;
 
 use Types::Standard qw/Enum/;
-use Types::Interface qw/ObjectDoesInterface/;
+use OpenTracing::Types qw/SpanContext/;
 
 use constant CHILD_OF     => 'child_of';
 use constant FOLLOWS_FROM => 'follows_from';
@@ -27,7 +27,7 @@ protected_has reference_type => (
 
 has referenced_context => (
     is => 'ro',
-    isa => ObjectDoesInterface['OpenTracing::Interface::SpanContext'],
+    isa => SpanContext,
     required => 1,
     reader => 'get_referenced_context',
 );

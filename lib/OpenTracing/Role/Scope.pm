@@ -26,7 +26,7 @@ our $VERSION = 'v0.70.1';
 
 use Moo::Role;
 
-use Types::Interface qw/ObjectDoesInterface/;
+use OpenTracing::Types qw/Span/;
 use Types::Standard qw/Bool/;
 
 use Carp;
@@ -44,7 +44,7 @@ L<OpenTracing::Interface>.
 
 has span => (
     is => 'ro',
-    isa => ObjectDoesInterface['OpenTracing::Interface::Span'],
+    isa => Span,
     reader => 'get_span',
 );
 

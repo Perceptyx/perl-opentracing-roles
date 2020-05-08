@@ -29,7 +29,7 @@ use MooX::HandlesVia;
 
 use Carp;
 use Data::GUID;
-use Time::HiRes qw/gettimeofday/;
+use Time::HiRes qw/time/;
 use Types::Standard qw/HashRef Num Object Str Value/;
 use Types::Interface qw/ObjectDoesInterface/;
 
@@ -281,7 +281,7 @@ Well, returns the time since 'epoch' with fractional seconds, as floating-point.
 =cut
 
 sub epoch_floatingpoint {
-    return scalar gettimeofday()
+    return time()
 }
 #
 # well, this is a bit off a silly idea:

@@ -7,6 +7,7 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 
 package MyTest::Span;
+use Test::Time::HiRes time => 256.875;
 
 use Moo;
 
@@ -25,7 +26,6 @@ with 'OpenTracing::Role::SpanContext';
 package main;
 
 my $test_span;
-my $start_time = time();
 
 lives_ok {
     $test_span = MyTest::Span->new(
@@ -35,11 +35,8 @@ lives_ok {
     );
 } "Can create new 'Span'";
 
-# note, perl time works with integers, the Span object should work with floats
-#
-ok( between( $test_span->start_time, $start_time, $start_time +1 ),
-    "Span created within 1 second"
-);
+is $test_span->start_time +0, 256.875,      # Test::Time::HiRes returns a string
+    "... and has the correct start_time";
 
 
 
@@ -47,9 +44,6 @@ done_testing();
 
 
 
-sub between {
-    return ($_[0] >= $_[1]) && ($_[0] <= $_[2])
-}
 
 
 

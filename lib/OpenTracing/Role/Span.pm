@@ -31,7 +31,7 @@ use Carp;
 use Data::GUID;
 use Time::HiRes qw/time/;
 use Types::Standard qw/HashRef Num Object Str Value/;
-use Types::Interface qw/ObjectDoesInterface/;
+use OpenTracing::Types qw/:types :is/;
 
 
 
@@ -98,7 +98,7 @@ has tags => (
 
 has context => (
     is              => 'ro',
-    isa             => ObjectDoesInterface['OpenTracing::Interface::SpanContext'],
+    isa             => SpanContext,
     reader          => 'get_context',
 #   writer          => '_set_context',
     required        => 1, # either from Span->get_context or SpanContext self
@@ -244,7 +244,7 @@ sub parent_span_id {
     my $self = shift;
     
     my $parent = $self->{ child_of };
-    return unless $parent->does('OpenTracing::Role::Span');
+    return unless is_Span( $parent );
     
     return $parent->span_id
 }

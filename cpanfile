@@ -1,4 +1,5 @@
 requires            "OpenTracing::Interface", '>= 0.19';
+requires            "OpenTracing::Types"; # yes, it is part of Interface'
 
 requires            "Carp";
 requires            "Data::GUID";
@@ -9,7 +10,6 @@ requires            "MooX::ProtectedAttributes";
 requires            "Sub::Trigger::Lock";
 requires            "Time::HiRes";
 requires            "Try::Tiny";
-requires            "Types::Interface";
 requires            "Types::Standard";
 
 on 'test' => sub {

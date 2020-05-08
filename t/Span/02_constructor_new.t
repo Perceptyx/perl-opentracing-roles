@@ -11,10 +11,10 @@ use Test::Time::HiRes time => 256.875;
 my $test_span;
 
 lives_ok {
-    $test_span = MyTest::Span->new(
+    $test_span = MyStub::Span->new(
         operation_name => 'test',
-        context        => bless( {}, 'MyTest::SpanContext' ),
-        child_of       => bless( {}, 'MyTest::Span' ),
+        context        => bless( {}, 'MyStub::SpanContext' ),
+        child_of       => bless( {}, 'MyStub::Span' ),
     );
 } "Can create new 'Span'";
 
@@ -25,7 +25,7 @@ done_testing();
 
 
 
-package MyTest::Span;
+package MyStub::Span;
 
 use Moo;
 
@@ -33,7 +33,7 @@ BEGIN { with 'OpenTracing::Role::Span' }
 
 
 
-package MyTest::SpanContext;
+package MyStub::SpanContext;
 
 use Moo;
 

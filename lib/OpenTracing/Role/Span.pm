@@ -216,14 +216,14 @@ sub duration {
         or croak
             "Span has not been started: ['"
             .
-            $self->operation_name
+            ( $self->operation_name || "'undef'" )
             .
             "'] ... how did you do that ?";
     my $finish_time = $self->{ finish_time }
         or croak
             "Span has not been finished: ['"
             .
-            $self->operation_name
+            ( $self->operation_name || "'undef'" )
             .
             "'] ... yet!";
     

@@ -12,6 +12,24 @@ it may cause issues being compatible with other modules and or frameworks that
 need the deeper voodoo magic inside Opentracing.
 
 
+=head2 Provided roles
+
+This distribution provides the following roles:
+
+=over 4
+
+=item L<OpenTracing::Role::Scope>
+
+=item L<OpenTracing::Role::ScopeManager>
+
+=item L<OpenTracing::Role::Span>
+
+=item L<OpenTracing::Role::SpanContext>
+
+=item L<OpenTracing::Role::Tracer>
+
+=back
+
 
 =head1 AUTHOR
 

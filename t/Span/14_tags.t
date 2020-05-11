@@ -43,6 +43,46 @@ subtest "Instantiation of Span and Tags" => sub {
 
 
 
+subtest "Setting tags" => sub {
+    
+    cmp_deeply(
+        {
+            MyStub::Span->new(
+                operation_name => 'test',
+                context        => bless( {}, 'MyStub::SpanContext' ),
+                child_of       => bless( {}, 'MyStub::Span' ),
+            )->set_tag(
+                key3 => 'baz'
+            )->get_tags( )
+        },
+        {
+            key3 => 'baz',
+        },
+        "Can set additional tag"
+    );
+    
+    cmp_deeply(
+        {
+            MyStub::Span->new(
+                operation_name => 'test',
+                context        => bless( {}, 'MyStub::SpanContext' ),
+                child_of       => bless( {}, 'MyStub::Span' ),
+                tags           => { key1 => 'foo', key2 => 'bar' },
+            )->set_tag(
+                key1 => 'qux',
+            )->get_tags( )
+        },
+        {
+            key1 => 'qux',
+            key2 => 'bar',
+        },
+        "Will overwrite already existing tag... it's called 'set_tag'"
+    );
+    
+};
+
+
+
 done_testing();
 
 

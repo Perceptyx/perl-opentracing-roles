@@ -54,6 +54,21 @@ subtest "Test with 'current time'" => sub {
 
 
 
+subtest "Test with 'explicit time'" => sub {
+    
+    Test::Time::HiRes->set_time( 128.250 );
+    
+    is MyStub::Span->new(
+        operation_name => 'test',
+        context        => bless( {}, 'MyStub::SpanContext' ),
+        child_of       => bless( {}, 'MyStub::Span' ),
+    )->finish(256.750)->duration, 128.500,
+        "Did a quick chained reaction";
+    
+};
+
+
+
 done_testing();
 
 

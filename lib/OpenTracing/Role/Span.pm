@@ -152,6 +152,22 @@ sub set_tag {
 
 
 
+sub set_tags {
+    my $self = shift;
+    
+    croak "Can't set a tag on an already finished span"
+        if $self->has_finished;
+    
+    my %tags = @_;
+    $self->_set_tags(
+        { $self->get_tags, %tags }
+    );
+    
+    return $self
+}
+
+
+
 sub log_data {
     my $self = shift;
     

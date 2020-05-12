@@ -40,6 +40,68 @@ subtest "A single baggage_item" => sub {
 
 
 
+subtest "Multiple baggage_items" => sub {
+    
+    my $span_context_1;
+    my $span_context_2;
+    
+    lives_ok {
+        $span_context_1 = MyStub::SpanContext->new(
+            baggage_items => {
+                item_1 => 'foo',
+                item_2 => 'bar',
+            },
+        );
+    } "Instantiated a SpanContext [1]";
+    
+    cmp_deeply(
+        {
+            $span_context_1->get_baggage_items
+        },
+        {
+            item_1 => 'foo',
+            item_2 => 'bar',
+        },
+        "... that has the given 'baggage_item's"
+    );
+    
+    lives_ok {
+        $span_context_2 = $span_context_1->with_baggage_items(
+            item_2 => 'qux',
+            item_3 => 'baz',
+        );
+    } "Got a SpanContext [2]";
+    
+    isnt $span_context_1, $span_context_2,
+        "... that is not the same object reference as the original";
+    
+    cmp_deeply(
+        {
+            $span_context_1->get_baggage_items
+        },
+        {
+            item_1 => 'foo',
+            item_2 => 'bar',
+        },
+        "... and SpanContext [1] has the old 'baggage_item's"
+    );
+    
+    cmp_deeply(
+        {
+            $span_context_2->get_baggage_items
+        },
+        {
+            item_1 => 'foo',
+            item_2 => 'qux',
+            item_3 => 'baz',
+        },
+        "... and SpanContext [2] has the new 'baggage_item's"
+    );
+    
+};
+
+
+
 done_testing();
 
 

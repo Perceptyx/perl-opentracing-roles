@@ -66,12 +66,24 @@ has baggage_items => (
     isa             => HashRef[Str],
     handles_via     => 'Hash',
     handles         => {
-        get_baggage_item => 'get',
+#       get_baggage_item => 'get',
         get_baggage_items => 'all',
     },
     default         => sub{ {} },
     trigger         => Lock,
 );
+
+
+# XXX: trigger and $obj->get_baggage_item( 'foo' ) do not play well together
+#      feels like a bug in Moo or Sub::Trigger::Lock
+#
+sub get_baggage_item {
+    my $self = shift;
+    my $item_key = shift;
+    
+    return { $self->get_baggage_items() }->{ $item_key }
+}
+
 
 
 # with_baggage_item

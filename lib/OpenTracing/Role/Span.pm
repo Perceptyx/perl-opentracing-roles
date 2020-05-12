@@ -145,7 +145,7 @@ sub set_tag {
     my $key = shift;
     my $value = shift;
     
-    $self->{ tags }->{ $key } = $value;
+    $self->set_tags( $key => $value );
     
     return $self
 }

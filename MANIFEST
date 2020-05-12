@@ -35,6 +35,7 @@ t/Span/14_tags.t
 t/SpanContext/00_use_ok.t
 t/SpanContext/01_can_all_ok.t
 t/SpanContext/01_interface_ok.t
+t/SpanContext/09_clone.t
 t/Tracer/00_use_ok.t
 t/Tracer/01_can_all_ok.t
 t/Tracer/01_interface_ok.t

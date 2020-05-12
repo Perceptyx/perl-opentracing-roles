@@ -107,7 +107,7 @@ sub with_baggage_items {
     my ( $self, %args ) = @_;
     
     $self->_clone(
-        baggage_items => { $self->get_bagage_items(), %args },
+        baggage_items => { $self->get_baggage_items(), %args },
     );
 }
 

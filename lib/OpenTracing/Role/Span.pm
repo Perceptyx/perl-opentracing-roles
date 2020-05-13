@@ -192,8 +192,7 @@ sub set_baggage_item {
     my $key = shift;
     my $value = shift;
     
-    my $new_context = $self->get_context()->with_baggage_item( $key, $value );
-    $self->_set_context( $new_context );
+    $self->set_baggage_items( $key => $value );
     
     return $self
 }

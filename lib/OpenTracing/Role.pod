@@ -18,6 +18,8 @@ This distribution provides the following roles:
 
 =over 4
 
+=item L<OpenTracing::Role::ContextReference>
+
 =item L<OpenTracing::Role::Scope>
 
 =item L<OpenTracing::Role::ScopeManager>

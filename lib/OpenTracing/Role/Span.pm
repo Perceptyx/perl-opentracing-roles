@@ -224,6 +224,14 @@ sub get_baggage_item {
 
 
 
+sub get_baggage_items {
+    my $self = shift;
+    
+    return $self->get_context()->get_baggage_items
+}
+
+
+
 sub duration { 
     my $self = shift;
     

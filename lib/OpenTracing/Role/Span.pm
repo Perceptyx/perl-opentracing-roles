@@ -62,7 +62,7 @@ has operation_name => (
     isa             => Str,
     required        => 1,
 #   writer          => 'overwrite_operation_name',
-#   reader          => 'get_operation_name', # not sure, it's not in the Interface
+    reader          => 'get_operation_name', # it's not in the Interface
 );
 
 

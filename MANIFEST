@@ -34,6 +34,7 @@ t/Span/13_duration.t
 t/Span/14_tags.t
 t/Span/15_span_context_and_baggage_items.t
 t/Span/16_log_data.t
+t/Span/17_operation_name.t
 t/SpanContext/00_use_ok.t
 t/SpanContext/01_can_all_ok.t
 t/SpanContext/01_interface_ok.t

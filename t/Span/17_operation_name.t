@@ -2,6 +2,36 @@ use Test::Most;
 
 
 
+subtest "Using accessors" => sub {
+    
+    my $test_span;
+    
+    lives_ok {
+        $test_span = MyStub::Span->new(
+            operation_name  => 'this name',
+            context         => bless( {}, 'MyStub::SpanContext' ),
+            child_of        => bless( {}, 'MyStub::SpanContext' ),
+        );
+    } "Created a Stub Span with required 'operation_name'"
+    
+    or return;
+    
+    dies_ok {
+        $test_span->operation_name;
+    } "... and does not allow for attribute access to retrieve the name";
+    
+    is $test_span->get_operation_name, 'this name',
+        "... but does return the right name using the 'getter' method";
+    
+    dies_ok {
+        $test_span->operation_name( 'that name' );
+    } "... and does not allow for just updating the name";
+    
+    dies_ok {
+        $test_span->set_operation_name( 'that name' );
+    } "... and does not allow for just use a 'setter'";
+    
+};
 
 
 

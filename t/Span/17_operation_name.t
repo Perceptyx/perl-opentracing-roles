@@ -2,7 +2,6 @@ use Test::Most;
 
 
 
-pass "this is just boilerplat";
 
 
 

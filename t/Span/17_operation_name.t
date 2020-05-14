@@ -35,6 +35,32 @@ subtest "Using accessors" => sub {
 
 
 
+subtest "Using 'overwrite_operation_name'" => sub {
+    
+    my $test_span;
+    
+    lives_ok {
+        $test_span = MyStub::Span->new(
+            operation_name  => 'this name',
+            context         => bless( {}, 'MyStub::SpanContext' ),
+            child_of        => bless( {}, 'MyStub::SpanContext' ),
+        );
+    } "Created a Stub Span"
+    
+    
+    or return;
+    
+    lives_ok {
+        $test_span->overwrite_operation_name( 'that name' );
+    } "... and could call the right 'overwrite' method";
+    
+    is $test_span->get_operation_name, 'that name',
+        "... and does return the right name";
+    
+};
+
+
+
 done_testing();
 
 

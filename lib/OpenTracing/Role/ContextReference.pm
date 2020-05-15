@@ -2,7 +2,7 @@ package OpenTracing::Role::ContextReference;
 
 
 
-our $VERSION = 'v0.70.1';
+our $VERSION = '0.08_001';
 
 
 

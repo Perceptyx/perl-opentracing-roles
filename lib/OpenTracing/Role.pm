@@ -1,7 +1,7 @@
 package OpenTracing::Role;
 
 
-our $VERSION = 'v0.70.1';
+our $VERSION = '0.08_001';
 
 
 1;

@@ -2,6 +2,26 @@ CHANGE LOG
 ==========
 
 
+2020-04-20 - v0.08_001
+----------------------
+
+### Changed
+    - use `OpenTracing::Types` where possible
+
+### Added
+    - state `closed` for Scope
+    - state `span_id` which defaults to UUID
+    - method `get_operation_name` as getter
+    - method `set_tags` to set more than one
+    - method `set_baggage_items`
+    - method `get_baggage_items`
+    - state `child_of`
+    - method `parent_span_id`
+    - method `get_baggage_item`
+
+### Added hundreds of test
+
+
 2020-04-20 - v0.07
 ------------------
 

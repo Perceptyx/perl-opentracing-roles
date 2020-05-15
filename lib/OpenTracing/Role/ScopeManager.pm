@@ -22,7 +22,7 @@ OpenTracing::Role::ScopeManager - Role for OpenTracing implementations.
 
 
 
-our $VERSION = '0.07';
+our $VERSION = '0.08_001';
 
 
 

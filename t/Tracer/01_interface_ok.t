@@ -25,7 +25,6 @@ with 'OpenTracing::Role::Tracer';
 
 # add required subs
 #
-sub _build_scope_manager { ... }
 sub build_span { ... }
 sub extract_context { ... }
 sub inject_context { ... }

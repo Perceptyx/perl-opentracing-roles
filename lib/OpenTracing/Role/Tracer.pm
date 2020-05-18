@@ -53,8 +53,6 @@ has scope_manager => (
 
 
 
-requires '_build_scope_manager';
-
 requires 'build_span';
 
 requires 'extract_context';

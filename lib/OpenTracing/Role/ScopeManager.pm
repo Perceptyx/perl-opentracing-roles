@@ -28,6 +28,7 @@ our $VERSION = '0.08_001';
 
 use Moo::Role;
 
+use Types::Standard qw/CodeRef/;
 
 
 =head1 DESCRIPTION
@@ -59,6 +60,11 @@ has _active_scope => (
 
 
 
+has scope_builder => (
+    is       => 'ro',
+    isa      => CodeRef,
+    default  => sub { sub {...} },
+);
 
 
 

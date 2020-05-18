@@ -80,7 +80,6 @@ done_testing();
 package MyStub::Tracer;
 use Moo;
 
-sub _build_scope_manager { ... }
 sub build_span           { ... }
 sub extract_context      { ... }
 sub inject_context       { ... }

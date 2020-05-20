@@ -27,7 +27,7 @@ our $VERSION = '0.08_001';
 use Moo::Role;
 
 use OpenTracing::Types qw/Span/;
-use Types::Standard qw/Bool/;
+use Types::Standard qw/Bool CodeRef/;
 
 use Carp;
 
@@ -66,8 +66,15 @@ has closed => (
 
 
 
-around close => sub {
-    my $orig = shift;
+has on_close => (
+    is              => 'ro',
+    isa             => CodeRef,
+    default         => sub { sub { } },
+);
+
+
+
+sub close {
     my $self = shift;
     
     croak "Can't close an already closed scope"
@@ -78,8 +85,11 @@ around close => sub {
     $self->get_span->finish
         if $self->finish_span_on_close;
     
-    $orig->( $self => @_ );
+    $self->on_close->( $self ); # we do like to have $self as invocant
+    
 #   return $self->get_scope_manager()->deactivate_scope( $self );
+    
+    return $self
     
 };
 

@@ -18,8 +18,13 @@ use warnings;
 
 our @close_arguments;
 
+my $test_obj = new_ok('MyStub::Scope' =>
+    [
+        on_close => sub { push @close_arguments, [ @_ ] },
+    ]
+);
 
-my $test_obj = new_ok('MyTestClass');
+pass "... and did get a 'on_close' CodeRef to be used below";
 
 ok ! ( $test_obj->closed ),
     "... and has not been closed yet";
@@ -30,9 +35,9 @@ lives_ok {
 
 cmp_deeply(
     [ @close_arguments ] => [
-        [ obj_isa('MyTestClass') ],
+        [ obj_isa('MyStub::Scope') ],
     ],
-    "... our 'close' only receives the object itself"
+    "... our 'on_close' CodeRef only receives the object itself"
 );
 
 ok $test_obj->closed,

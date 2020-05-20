@@ -18,27 +18,6 @@ use warnings;
 
 our @close_arguments;
 
-package MyTestClass;
-
-use Moo;
-
-with 'OpenTracing::Role::Scope';
-
-# add required subs
-#
-sub close {
-    push @main::close_arguments, [ @_ ];
-    
-    my $self = shift;
-    
-    return $self;
-}
-
-sub get_span { ... }
-
-
-
-package main;
 
 my $test_obj = new_ok('MyTestClass');
 
@@ -73,3 +52,15 @@ cmp_deeply(
 
 
 done_testing();
+
+
+
+package MyStub::Scope;
+
+use Moo;
+
+
+BEGIN {
+    with 'OpenTracing::Role::Scope';
+}
+

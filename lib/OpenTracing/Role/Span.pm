@@ -30,7 +30,7 @@ use MooX::HandlesVia;
 use Carp;
 use Data::GUID;
 use Time::HiRes qw/time/;
-use Types::Standard qw/HashRef Num Object Str Value/;
+use Types::Standard qw/CodeRef HashRef Maybe Num Object Str Value/;
 use OpenTracing::Types qw/:types :is/;
 
 
@@ -131,6 +131,8 @@ sub finish {
     
     $self->_set_finish_time( $epoch_timestamp );
     
+    $self->on_finish->( $self ) # we do like to have $self as invocant
+        if $self->has_on_finish;
     return $self
 }
 
@@ -293,6 +295,30 @@ sub _set_context {
     $self->{ context } = $context;
     
     return $self
+}
+
+
+
+has on_finish => (
+    is              => 'ro',
+    isa             => Maybe[CodeRef],
+    predicate       => 1,
+);
+
+
+
+sub DEMOLISH {
+    my $self = shift;
+    my $in_global_destruction = shift;
+    
+    return if $self->has_finished;
+    
+#   carp "Span not programmatically finished before being demolished";
+    
+    $self->finish( )
+        unless $in_global_destruction;
+    
+    return
 }
 
 

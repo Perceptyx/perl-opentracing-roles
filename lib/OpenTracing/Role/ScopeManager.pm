@@ -12,10 +12,6 @@ OpenTracing::Role::ScopeManager - Role for OpenTracing implementations.
     
     with 'OpenTracing::Role::ScopeManager'
     
-    sub activate_span { ... }
-    
-    sub get_active_scope { ... }
-    
     1;
 
 =cut

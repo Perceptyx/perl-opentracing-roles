@@ -107,9 +107,6 @@ BEGIN { with 'OpenTracing::Role::Scope'; }
 package MyStub::ScopeManager;
 use Moo;
 
-sub activate_span { ... }
-sub get_active_scope { $_[0]->{ active_scope }; }
-
 BEGIN { with 'OpenTracing::Role::ScopeManager'; }
 
 

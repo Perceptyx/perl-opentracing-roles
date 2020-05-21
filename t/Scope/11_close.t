@@ -64,8 +64,5 @@ package MyStub::Scope;
 
 use Moo;
 
-
-BEGIN {
-    with 'OpenTracing::Role::Scope';
-}
+BEGIN { with 'OpenTracing::Role::Scope' }
 

@@ -27,7 +27,7 @@ our $VERSION = '0.08_001';
 use Moo::Role;
 
 use OpenTracing::Types qw/Span/;
-use Types::Standard qw/Bool CodeRef/;
+use Types::Standard qw/Bool CodeRef Maybe/;
 
 use Carp;
 
@@ -68,8 +68,8 @@ has closed => (
 
 has on_close => (
     is              => 'ro',
-    isa             => CodeRef,
-    default         => sub { sub { } },
+    isa             => Maybe[CodeRef],
+    predicate       => 1,
 );
 
 
@@ -85,7 +85,8 @@ sub close {
     $self->get_span->finish
         if $self->finish_span_on_close;
     
-    $self->on_close->( $self ); # we do like to have $self as invocant
+    $self->on_close->( $self ) # we do like to have $self as invocant
+        if $self->has_on_close;
     
 #   return $self->get_scope_manager()->deactivate_scope( $self );
     

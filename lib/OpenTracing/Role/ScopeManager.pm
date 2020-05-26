@@ -74,7 +74,8 @@ sub activate_span {
             : !undef
     ; # use 'truthness' of param if provided, or set to 'true' otherwise
     
-    my $scope = $self->scope_builder( $span,
+    my $scope = $self->build_scope(
+        span                 => $span,
         finish_span_on_close => $finish_span_on_close,
         %$options,
     );
@@ -86,6 +87,20 @@ sub activate_span {
 
 
 
+sub build_scope {
+    my $self = shift;
+    
+    (
+        Dict[
+            span                 => Span,
+            finish_span_on_close => Bool,
+        ]
+    )->assert_valid( { @_ } );
+    
+    return unless $self->has_scope_builder;
+    
+    return $self->scope_builder->( $self, @_ )
+}
 
 
 

@@ -54,6 +54,23 @@ has _active_scope => (
 
 
 
+=head1 ATTRIBUTES
+
+
+
+=head2 C<scope_builder>
+
+An optional C<CodeRef> that will get called by C<build_span> and thus by
+C<activste_span>.
+
+First argument will be C<$self>, the C<ScopeManager> instance, so that any code
+can C<set_active_scope> or C<get_active_scope>.
+
+Other than that, it also expects to recieve the named parameters as mentioned in
+L<build_scope>.
+
+=cut
+
 has scope_builder => (
     is        => 'ro',
     isa       => Maybe[CodeRef],
@@ -61,6 +78,43 @@ has scope_builder => (
 );
 
 
+
+=head1 INSTANCE METHODS
+
+=cut
+
+
+
+=head2 activate_span
+
+Sets the given C<$span> as being the active span in a newly created C<Scope>.
+
+=head3 Required Positional Parameter
+
+=over
+
+=item C<$span>
+
+A OpenTracing compliant C<Span> object.
+
+=back
+
+=head3 Optional Named Parameter
+
+=over
+
+=item C<finish_span_on_close>
+
+A C<Bool> type, that decides wether or not C<finish> gets called on the C<$span>
+object. Defaults to 'true'.
+
+=back
+
+=head3 Note
+
+This is part of a proposed API change.
+
+=cut
 
 sub activate_span {
     my $self = shift;
@@ -86,6 +140,32 @@ sub activate_span {
 }
 
 
+
+=head2 C<build_scope>
+
+Does call the C<code_builder> CodeRef.
+
+=head3 Required Named Parameters
+
+=over
+
+=item C<span>
+
+A OpenTracing compliant C<Span> object.
+
+=item C<finish_span_on_close>
+
+A C<Bool> type.
+
+=back
+
+=head3 Note
+
+Unlike the OpenTracing API interface specification, C<build_scope> does not let
+it up for discusion, C<span> and C<finish_span_on_close> are required named
+parameters. And as such passed on to the C<scope_builder> C<CodeRef>.
+
+=cut
 
 sub build_scope {
     my $self = shift;

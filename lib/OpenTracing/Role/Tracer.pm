@@ -32,7 +32,7 @@ use Moo::Role;
 
 use Carp;
 use Try::Tiny;
-use Types::Standard qw/Object/;
+use OpenTracing::Types qw/ScopeManager/;
 
 
 
@@ -46,9 +46,10 @@ L<OpenTracing::Interface>.
 
 
 has scope_manager => (
-    is              => 'lazy',
-    isa             => Object,
+    is              => 'ro',
+    isa             => ScopeManager,
     reader          => 'get_scope_manager',
+    required        => 1,
 );
 
 

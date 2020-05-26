@@ -26,8 +26,8 @@ use Moo::Role;
 
 use Carp;
 
-use Types::Standard qw/CodeRef/;
-use OpenTracing::Types qw/Scope/;
+use Types::Standard qw/Bool CodeRef Dict Maybe/;
+use OpenTracing::Types qw/Scope Span/;
 
 
 

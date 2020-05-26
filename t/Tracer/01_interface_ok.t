@@ -17,22 +17,23 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 
 
-package MyTestClass;
-
+package MyStub::Tracer;
 use Moo;
 
-with 'OpenTracing::Role::Tracer';
+sub build_span          { ... }
+sub extract_context     { ... }
+sub inject_context      { ... }
 
-# add required subs
-#
-sub build_span { ... }
-sub extract_context { ... }
-sub inject_context { ... }
+with 'OpenTracing::Role::Tracer';
 
 
 
 package main;
 
-interface_ok('MyTestClass', 'OpenTracing::Interface::Tracer');
+interface_ok('MyStub::Tracer', 'OpenTracing::Interface::Tracer');
 
 done_testing();
+
+
+
+1;

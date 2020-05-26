@@ -12,8 +12,8 @@ done_testing();
 package MyStub::Tracer;
 use Moo;
 
-sub build_span           { ... }
-sub extract_context      { ... }
-sub inject_context       { ... }
+sub build_span          { ... }
+sub extract_context     { ... }
+sub inject_context      { ... }
 
-BEGIN { with 'OpenTracing::Role::Tracer' }
+BEGIN { with 'OpenTracing::Role::Tracer'; }

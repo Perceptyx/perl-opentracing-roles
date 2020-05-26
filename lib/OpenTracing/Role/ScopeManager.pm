@@ -54,6 +54,14 @@ has _active_scope => (
 
 
 
+has scope_builder => (
+    is        => 'ro',
+    isa       => Maybe[CodeRef],
+    predicate => 1,
+);
+
+
+
 sub activate_span {
     my $self = shift;
     my $span = shift or croak "Missing OpenTracing Span";
@@ -78,11 +86,6 @@ sub activate_span {
 
 
 
-has scope_builder => (
-    is       => 'ro',
-    isa      => CodeRef,
-    default  => sub { sub {...} },
-);
 
 
 

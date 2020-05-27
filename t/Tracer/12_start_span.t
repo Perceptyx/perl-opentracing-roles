@@ -145,6 +145,8 @@ BEGIN { with 'OpenTracing::Role::SpanContext'; }
 package MyStub::ScopeManager;
 use Moo;
 
+sub build_scope { ... };
+
 BEGIN { with 'OpenTracing::Role::ScopeManager'; }
 
 

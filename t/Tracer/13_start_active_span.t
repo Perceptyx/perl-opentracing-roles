@@ -269,6 +269,8 @@ BEGIN { with 'OpenTracing::Role::Scope'; }
 package MyStub::ScopeManager;
 use Moo;
 
+sub build_scope { ... };
+
 BEGIN { with 'OpenTracing::Role::ScopeManager'; }
 
 

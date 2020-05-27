@@ -27,7 +27,7 @@ use Moo::Role;
 use Carp;
 
 use Types::Standard qw/Bool CodeRef Dict Maybe/;
-use OpenTracing::Types qw/Scope Span/;
+use OpenTracing::Types qw/Scope Span assert_Scope/;
 
 
 
@@ -54,28 +54,70 @@ has _active_scope => (
 
 
 
-=head1 ATTRIBUTES
+=head1 REQUIRED METHODS
 
 
 
-=head2 C<scope_builder>
+=head2 C<build_scope>
 
-An optional C<CodeRef> that will get called by C<build_span> and thus by
-C<activste_span>.
+This method should return a C<Scope>
 
-First argument will be C<$self>, the C<ScopeManager> instance, so that any code
-can C<set_active_scope> or C<get_active_scope>.
+=head3 Expected Named Parameters
 
-Other than that, it also expects to recieve the named parameters as mentioned in
-L<build_scope>.
+=over
+
+=item C<span>
+
+A OpenTracing compliant C<Span> object.
+
+=item C<finish_span_on_close>
+
+A C<Bool> type.
+
+=back
+
+=head3 Note
+
+Unlike the OpenTracing API interface specification, C<build_scope> does not let
+it up for discusion, C<span> and C<finish_span_on_close> are expected named
+parameters.
 
 =cut
 
-has scope_builder => (
-    is        => 'ro',
-    isa       => Maybe[CodeRef],
-    predicate => 1,
-);
+
+
+# build in some safeguards
+#
+# - to protect our selves that we do pass on the expected named arguments
+# - to check that we do get back the right type, we do not trust the consuming
+#   class to do th right thing, do we ?
+#
+around 'build_scope' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my @args = @_;
+    
+    (
+        Dict[
+            span                 => Span,
+            finish_span_on_close => Bool,
+        ]
+    )->assert_valid( { @args } );
+        # if STRICT;
+    
+    my $rtrn = $orig->( $self => @args );
+    
+    assert_Scope( $rtrn );
+        # if STRICT;
+    
+#   assert_True( $rtrn->get_span eq { @args }->{span} );
+#       # if STRICT;
+#   #
+#   # Are we paranoia ? Did they do something evil under the hood ?
+    
+    return $rtrn
+    
+};
 
 
 
@@ -137,49 +179,6 @@ sub activate_span {
     $self->set_active_scope( $scope );
     
     return $scope
-}
-
-
-
-=head2 C<build_scope>
-
-Does call the C<code_builder> CodeRef.
-
-=head3 Required Named Parameters
-
-=over
-
-=item C<span>
-
-A OpenTracing compliant C<Span> object.
-
-=item C<finish_span_on_close>
-
-A C<Bool> type.
-
-=back
-
-=head3 Note
-
-Unlike the OpenTracing API interface specification, C<build_scope> does not let
-it up for discusion, C<span> and C<finish_span_on_close> are required named
-parameters. And as such passed on to the C<scope_builder> C<CodeRef>.
-
-=cut
-
-sub build_scope {
-    my $self = shift;
-    
-    (
-        Dict[
-            span                 => Span,
-            finish_span_on_close => Bool,
-        ]
-    )->assert_valid( { @_ } );
-    
-    return unless $self->has_scope_builder;
-    
-    return $self->scope_builder->( $self, @_ )
 }
 
 

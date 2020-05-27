@@ -10,7 +10,7 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 subtest "Pass through to 'start_span' with known options" => sub {
     
-    my ($self, $call_name, $call_args);
+    my ( $call_name, $call_args);
     
     my $stub_scope_manager = Test::MockObject::Extends->new(
         MyStub::ScopeManager->new()
@@ -74,7 +74,7 @@ subtest "Pass through to 'start_span' with known options" => sub {
 
 subtest "Pass through to 'start_span' without any options" => sub {
     
-    my ($self, $call_name, $call_args);
+    my ($call_name, $call_args);
     
     my $stub_scope_manager = Test::MockObject::Extends->new(
         MyStub::ScopeManager->new()
@@ -123,7 +123,7 @@ subtest "Pass through to 'start_span' without any options" => sub {
 subtest "Private option 'finish_span_on_close'" => sub {
     
 
-    my ($self, $call_name, $call_args);
+    my ($call_name, $call_args);
     
     my $some_span = bless {}, 'MyStub::Span';
     

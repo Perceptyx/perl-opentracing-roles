@@ -17,7 +17,7 @@ subtest "Get the original 'ScopeManager'" => sub {
     
     plan tests => 1;
     
-    my ($self, $call_name, $call_args);
+    my ($call_name, $call_args);
     
     my $some_scope_manager = MyStub::ScopeManager->new;
     

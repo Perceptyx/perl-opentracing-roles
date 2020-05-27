@@ -53,7 +53,7 @@ subtest "Pass through to 'build_span' with known options" => sub {
     
     plan tests => 4;
     
-    my ($self, $call_name, $call_args);
+    my ($call_name, $call_args);
     
     my $mock_tracer = Test::MockObject::Extends->new(
         MyStub::Tracer->new(

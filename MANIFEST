@@ -26,6 +26,8 @@ t/ScopeManager/00_use_ok.t
 t/ScopeManager/01_can_all_ok.t
 t/ScopeManager/01_interface_ok.t
 t/ScopeManager/11_active_scope.t
+t/ScopeManager/12_build_scope.t
+t/ScopeManager/13_activate_span.t
 t/Span/00_use_ok.t
 t/Span/01_can_all_ok.t
 t/Span/01_interface_ok.t

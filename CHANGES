@@ -2,7 +2,18 @@ CHANGE LOG
 ==========
 
 
-2020-04-20 - v0.08_002
+2020-05-29 - v0.08_003
+----------------------
+
+### Changed
+    - `build_scope` and `build_span` have well defined parameter lists
+
+### Added
+    - documented index of related modules
+    - much more tests
+
+
+2020-05-20 - v0.08_002
 ----------------------
 
 ### Changed
@@ -10,7 +21,7 @@ CHANGE LOG
     - `on_finish` instead of on_DEMOLISH, so we can call it early
 
 
-2020-04-20 - v0.08_001
+2020-05-20 - v0.08_001
 ----------------------
 
 ### Changed

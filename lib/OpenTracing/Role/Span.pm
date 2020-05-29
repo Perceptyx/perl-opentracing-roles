@@ -31,6 +31,7 @@ use Carp;
 use Data::GUID;
 use Time::HiRes qw/time/;
 use Types::Standard qw/CodeRef HashRef Maybe Num Object Str Value/;
+use Types::Common::Numeric qw/PositiveOrZeroNum/;
 use OpenTracing::Types qw/:types :is/;
 
 
@@ -69,7 +70,7 @@ has operation_name => (
 
 has start_time => (
     is              => 'ro',
-    isa             => Num,
+    isa             => PositiveOrZeroNum,
     default         => sub { epoch_floatingpoint() }
 );
 
@@ -77,7 +78,7 @@ has start_time => (
 
 has finish_time => (
     is              => 'rwp',
-    isa             => Num,
+    isa             => PositiveOrZeroNum,
     predicate       => 'has_finished',
     init_arg        => undef,
 );

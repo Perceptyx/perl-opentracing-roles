@@ -28,15 +28,21 @@ subtest "Missing Required Named Arguments ..." => sub {
     throws_ok {
         $mock_scope_manager->build_scope(
             finish_span_on_close => 1,
+            finish_span_on_close => 1,
+            #
+            # declare does a required count, before name
         )
-    } qr/requires key "span"/,
+    } qr/missing named parameter: span/,
         "Does require a 'span' argumnent";
     
     throws_ok {
         $mock_scope_manager->build_scope(
             span                 => bless( {}, 'MyStub::Span' ), 
+            span                 => bless( {}, 'MyStub::Span' ), 
+            #
+            # declare does a required count, before name
         )
-    } qr/exists\(\$_->\{"finish_span_on_close"\}\)/,
+    } qr/missing named parameter: finish_span_on_close/,
         "Does require a 'finish_span_on_close' argumnent";
     
 };
@@ -50,10 +56,10 @@ subtest "Bad Return Type ..." => sub {
     my $mock_scope_manager = MyStub::ScopeManager::Undef->new;
         
     throws_ok {
-        $mock_scope_manager->build_scope(
+        my $return = $mock_scope_manager->build_scope(
             span                 => bless( {}, 'MyStub::Span' ), 
             finish_span_on_close => 1,
-        )
+        );
     } qr/Undef did not pass type constraint "Scope"/,
         "Does need to return a Scope";
     

@@ -31,8 +31,11 @@ our $VERSION = '0.08_002';
 use Moo::Role;
 
 use Carp;
+use OpenTracing::Types qw/ScopeManager Span SpanContext/;
+use Role::Declare;
 use Try::Tiny;
-use OpenTracing::Types qw/ScopeManager/;
+use Types::Common::Numeric qw/PositiveOrZeroNum/;
+use Types::Standard qw/HashRef Str/;
 
 
 
@@ -53,8 +56,6 @@ has scope_manager => (
 );
 
 
-
-requires 'build_span';
 
 requires 'extract_context';
 
@@ -199,14 +200,15 @@ The followin must be implemented by consuming class
 
 =cut
 
-##### requires 'build_span';
-#
-# $self->build_span(
-#     operartion_name => $operation_name,
-#     start_time      => $start_time,
-#     tags            => \@tags,
-#     context         => $context,
-# );
+instance_method build_span (
+    
+    Str                 :$operation_name,
+    SpanContext | Span  :$child_of,
+    SpanContext         :$span_context,
+    PositiveOrZeroNum   :$start_time      = undef,
+    HashRef[Str]        :$tags            = {},
+    
+) :Return (Span) { };
 
 
 

@@ -28,6 +28,7 @@ use Carp;
 
 use Types::Standard qw/Bool CodeRef Dict Maybe/;
 use OpenTracing::Types qw/Scope Span assert_Scope/;
+use Role::Declare;
 
 
 
@@ -85,39 +86,12 @@ parameters.
 =cut
 
 
-
-# build in some safeguards
-#
-# - to protect our selves that we do pass on the expected named arguments
-# - to check that we do get back the right type, we do not trust the consuming
-#   class to do th right thing, do we ?
-#
-around 'build_scope' => sub {
-    my $orig = shift;
-    my $self = shift;
-    my @args = @_;
+instance_method build_scope (
     
-    (
-        Dict[
-            span                 => Span,
-            finish_span_on_close => Bool,
-        ]
-    )->assert_valid( { @args } );
-        # if STRICT;
+    Span :$span,
+    Bool :$finish_span_on_close
     
-    my $rtrn = $orig->( $self => @args );
-    
-    assert_Scope( $rtrn );
-        # if STRICT;
-    
-#   assert_True( $rtrn->get_span eq { @args }->{span} );
-#       # if STRICT;
-#   #
-#   # Are we paranoia ? Did they do something evil under the hood ?
-    
-    return $rtrn
-    
-};
+) :Return ( Scope ) { };
 
 
 

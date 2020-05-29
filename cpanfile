@@ -7,9 +7,11 @@ requires            "Moo::Role";
 requires            "MooX::Enumeration";
 requires            "MooX::HandlesVia";
 requires            "MooX::ProtectedAttributes";
+requires            "Role::Declare";
 requires            "Sub::Trigger::Lock";
 requires            "Time::HiRes";
 requires            "Try::Tiny";
+requires            "Types::Common::Numeric";
 requires            "Types::Standard";
 
 on 'test' => sub {

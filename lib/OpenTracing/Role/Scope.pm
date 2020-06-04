@@ -20,7 +20,7 @@ OpenTracing::Role::Scope - Role for OpenTracing implementations.
 
 
 
-our $VERSION = '0.08_003';
+our $VERSION = '0.08_004';
 
 
 

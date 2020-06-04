@@ -28,6 +28,7 @@ use Moo::Role;
 
 use MooX::HandlesVia;
 
+use Data::GUID;
 use Sub::Trigger::Lock;
 use Types::Standard qw/HashRef Str/;
 
@@ -56,6 +57,15 @@ methods like C<with_...> to clone this object with new values, rather than just
 updating any values of the the attributes.
 
 =cut
+
+
+
+has trace_id => (
+    is              => 'ro',
+#   isa             => Uuid, # not restraints here, do so when consuming this
+    init_arg        => undef,
+    default         => sub { Data::GUID->new },
+);
 
 
 

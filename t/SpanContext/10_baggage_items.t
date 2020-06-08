@@ -27,6 +27,9 @@ subtest "A single baggage_item" => sub {
     isnt $span_context_1, $span_context_2,
         "... that is not the same object reference as the original";
     
+    is $span_context_1->trace_id, $span_context_2->trace_id,
+        "... but has still the same 'trace_id'";
+    
     is $span_context_1->get_baggage_item( 'item_2' ), undef,
         "... and SpanContext [1] has not new 'baggage_item' [item_2]";
     

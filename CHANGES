@@ -2,6 +2,14 @@ CHANGE LOG
 ==========
 
 
+2020-06-08 - v0.08_005
+----------------------
+
+### Fixes
+    - issues with cloning, where `trace_id` would get new random value
+    - issues with `instance_method build_span`
+
+
 2020-06-04 - v0.08_004
 ----------------------
 

@@ -128,7 +128,9 @@ sub with_baggage_items {
 #
 sub _clone {
     my ( $self, @args ) = @_;
-    ref( $self )->new( %$self, @args );
+    
+    bless { %$self, @args }, ref $self;
+    
 }
 
 

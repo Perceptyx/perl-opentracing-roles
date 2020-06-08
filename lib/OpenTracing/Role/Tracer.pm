@@ -202,11 +202,11 @@ The followin must be implemented by consuming class
 
 instance_method build_span (
     
-    Str                 :$operation_name,
-    SpanContext | Span  :$child_of,
-    SpanContext         :$span_context,
-    PositiveOrZeroNum   :$start_time      = undef,
-    HashRef[Str]        :$tags            = {},
+    Str                   :$operation_name,
+    SpanContext | Span    :$child_of,
+    SpanContext | HashRef :$context,
+    PositiveOrZeroNum     :$start_time      = undef,
+    HashRef[Str]          :$tags            = {},
     
 ) :Return (Span) { };
 

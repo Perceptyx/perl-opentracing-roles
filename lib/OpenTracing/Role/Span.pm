@@ -1,25 +1,5 @@
 package OpenTracing::Role::Span;
 
-=head1 NAME
-
-OpenTracing::Role::Span - Role for OpenTracing implementations.
-
-=head1 SYNOPSIS
-
-    package OpenTracing::Implementation::MyBackendService::Span;
-    
-    use Moo;
-    
-    ...
-    
-    with 'OpenTracing::Role::Span'
-    
-    1;
-
-=cut
-
-
-
 our $VERSION = '0.08_005';
 
 
@@ -33,21 +13,6 @@ use Time::HiRes qw/time/;
 use Types::Standard qw/CodeRef HashRef Maybe Num Object Str Value/;
 use Types::Common::Numeric qw/PositiveOrZeroNum/;
 
-
-
-=head1 DESCRIPTION
-
-This is a Role for OpenTracing implenetations that are compliant with the
-L<OpenTracing::Interface>.
-
-With the exception of calls to C<get_context()> (which are always allowed),
-C<finish()> must be the last call made to any span instance, and to do otherwise
-leads to undefined behavior (but not returning an exception).
-
-=cut
-
-
-
 has operation_name => (
     is              => 'rwp',
     isa             => Str,
@@ -56,15 +21,11 @@ has operation_name => (
     reader          => 'get_operation_name', # it's not in the Interface
 );
 
-
-
 has start_time => (
     is              => 'ro',
     isa             => PositiveOrZeroNum,
     default         => sub { epoch_floatingpoint() }
 );
-
-
 
 has finish_time => (
     is              => 'rwp',
@@ -72,8 +33,6 @@ has finish_time => (
     predicate       => 'has_finished',
     init_arg        => undef,
 );
-
-
 
 has tags => (
     is              => 'rwp',
@@ -85,8 +44,6 @@ has tags => (
     default         => sub{ {} },
 );
 
-
-
 has context => (
     is              => 'ro',
     isa             => SpanContext,
@@ -94,8 +51,6 @@ has context => (
 #   writer          => '_set_context',
     required        => 1, # either from Span->get_context or SpanContext self
 );
-
-
 
 sub overwrite_operation_name {
     my $self = shift;
@@ -110,8 +65,6 @@ sub overwrite_operation_name {
     return $self
 }
 
-
-
 sub finish {
     my $self = shift;
     
@@ -122,12 +75,11 @@ sub finish {
     
     $self->_set_finish_time( $epoch_timestamp );
     
-    $self->on_finish->( $self ) # we do like to have $self as invocant
+    $self->on_finish->( $self )
         if $self->has_on_finish;
+    
     return $self
 }
-
-
 
 sub add_tag {
     my $self = shift;
@@ -143,8 +95,6 @@ sub add_tag {
     return $self
 }
 
-
-
 sub add_tags {
     my $self = shift;
     
@@ -159,8 +109,6 @@ sub add_tags {
     return $self
 }
 
-
-
 sub log_data {
     my $self = shift;
     
@@ -174,8 +122,6 @@ sub log_data {
     return $self
 }
 
-
-
 sub add_baggage_item {
     my $self = shift;
     
@@ -185,12 +131,10 @@ sub add_baggage_item {
     my $key = shift;
     my $value = shift;
     
-    $self->set_baggage_items( $key => $value );
+    $self->add_baggage_items( $key => $value );
     
     return $self
 }
-
-
 
 sub add_baggage_items {
     my $self = shift;
@@ -206,8 +150,6 @@ sub add_baggage_items {
     return $self
 }
 
-
-
 sub get_baggage_item {
     my $self = shift;
     my $key = shift;
@@ -215,15 +157,11 @@ sub get_baggage_item {
     return $self->get_context()->get_baggage_item( $key )
 }
 
-
-
 sub get_baggage_items {
     my $self = shift;
     
     return $self->get_context()->get_baggage_items
 }
-
-
 
 sub duration { 
     my $self = shift;
@@ -246,15 +184,11 @@ sub duration {
     return $finish_time - $start_time
 }
 
-
-
 has child_of => (
     is => 'ro',
     isa => Span | SpanContext,
     required => 1,
 );
-
-
 
 sub parent_span_id {
     my $self = shift;
@@ -288,15 +222,11 @@ sub _set_context {
     return $self
 }
 
-
-
 has on_finish => (
     is              => 'ro',
     isa             => Maybe[CodeRef],
     predicate       => 1,
 );
-
-
 
 sub DEMOLISH {
     my $self = shift;
@@ -311,14 +241,6 @@ sub DEMOLISH {
     
     return
 }
-
-
-
-=head2 epoch_floatingpoint
-
-Well, returns the time since 'epoch' with fractional seconds, as floating-point.
-
-=cut
 
 sub epoch_floatingpoint {
     return time()

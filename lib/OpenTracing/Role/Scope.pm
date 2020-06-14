@@ -1,28 +1,6 @@
 package OpenTracing::Role::Scope;
 
-=head1 NAME
-
-OpenTracing::Role::Scope - Role for OpenTracing implementations.
-
-=head1 SYNOPSIS
-
-    package OpenTracing::Implementation::MyBackendService::Scope;
-    
-    use Moo;
-    
-    with 'OpenTracing::Role::Scope'
-    
-    sub close => { ... }
-    
-    1;
-
-=cut
-
-
-
 our $VERSION = '0.08_005';
-
-
 
 use Moo::Role;
 
@@ -30,32 +8,16 @@ use Carp;
 use OpenTracing::Types qw/Span/;
 use Types::Standard qw/Bool CodeRef Maybe/;
 
-
-
-
-=head1 DESCRIPTION
-
-This is a Role for OpenTracing implenetations that are compliant with the
-L<OpenTracing::Interface>.
-
-=cut
-
-
-
 has span => (
     is => 'ro',
     isa => Span,
     reader => 'get_span',
 );
 
-
-
 has finish_span_on_close => (
     is => 'ro',
     isa => Bool,
 );
-
-
 
 has closed => (
     is              => 'rwp',
@@ -64,15 +26,11 @@ has closed => (
     default         => !!undef,
 );
 
-
-
 has on_close => (
     is              => 'ro',
     isa             => Maybe[CodeRef],
     predicate       => 1,
 );
-
-
 
 sub close {
     my $self = shift;
@@ -85,7 +43,7 @@ sub close {
     $self->get_span->finish
         if $self->finish_span_on_close;
     
-    $self->on_close->( $self ) # we do like to have $self as invocant
+    $self->on_close->( $self )
         if $self->has_on_close;
     
 #   return $self->get_scope_manager()->deactivate_scope( $self );
@@ -93,8 +51,6 @@ sub close {
     return $self
     
 };
-
-
 
 sub DEMOLISH {
     my $self = shift;

@@ -24,7 +24,7 @@ OpenTracing::Role::Tracer - Role for OpenTracin implementations.
 
 
 
-our $VERSION = 'v0.70.0';
+our $VERSION = 'v0.70.1';
 
 
 

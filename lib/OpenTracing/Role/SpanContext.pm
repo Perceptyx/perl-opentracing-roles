@@ -20,7 +20,7 @@ OpenTracing::Role::SpanContext - Role for OpenTracing implementations.
 
 
 
-our $VERSION = 'v0.70.0';
+our $VERSION = 'v0.70.1';
 
 
 

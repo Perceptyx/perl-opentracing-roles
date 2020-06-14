@@ -53,7 +53,10 @@ has scope_manager => (
     is              => 'ro',
     isa             => ScopeManager,
     reader          => 'get_scope_manager',
-    required        => 1,
+    default => sub {
+        require 'OpenTracing::Implementation::NoOp::ScopeManager';
+        return OpenTracing::Implementation::NoOp::ScopeManager->new
+    },
 );
 
 has default_span_context_args => (

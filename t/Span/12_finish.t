@@ -103,9 +103,9 @@ subtest "Finishing blocks other methods" => sub {
         "... and can not call 'overwrite_operation_name'";
     
     throws_ok {
-        $test_span->set_tag( foo => 'bar' )
+        $test_span->add_tag( foo => 'bar' )
     } qr/.* finished span/,
-        "... and can not call 'set_tag'";
+        "... and can not call 'add_tag'";
     
     throws_ok {
         $test_span->log_data( key1 => 'value1', key2 => 'value2' )
@@ -113,14 +113,14 @@ subtest "Finishing blocks other methods" => sub {
         "... and can not call 'log_data'";
     
     throws_ok {
-        $test_span->set_baggage_item( foo => 'bar' )
+        $test_span->add_baggage_item( foo => 'bar' )
     } qr/.* finished span/,
-        "... and can not call 'set_baggage_item'";
+        "... and can not call 'add_baggage_item'";
     
     throws_ok {
-        $test_span->set_baggage_items( key1 => 'value1', key2 => 'value2' )
+        $test_span->add_baggage_items( key1 => 'value1', key2 => 'value2' )
     } qr/.* finished span/,
-        "... and can not call 'set_baggage_items'";
+        "... and can not call 'add_baggage_items'";
     
 };
 

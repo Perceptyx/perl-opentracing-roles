@@ -129,7 +129,7 @@ sub finish {
 
 
 
-sub set_tag {
+sub add_tag {
     my $self = shift;
     
     croak "Can't set a tag on an already finished span"
@@ -138,14 +138,14 @@ sub set_tag {
     my $key = shift;
     my $value = shift;
     
-    $self->set_tags( $key => $value );
+    $self->add_tags( $key => $value );
     
     return $self
 }
 
 
 
-sub set_tags {
+sub add_tags {
     my $self = shift;
     
     croak "Can't set a tag on an already finished span"
@@ -176,7 +176,7 @@ sub log_data {
 
 
 
-sub set_baggage_item {
+sub add_baggage_item {
     my $self = shift;
     
     croak "Can't set baggage-items on an already finished span"
@@ -192,7 +192,7 @@ sub set_baggage_item {
 
 
 
-sub set_baggage_items {
+sub add_baggage_items {
     my $self = shift;
     
     croak "Can't set baggage-items on an already finished span"

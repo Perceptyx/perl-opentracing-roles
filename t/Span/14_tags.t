@@ -51,7 +51,7 @@ subtest "Setting tags" => sub {
                 operation_name => 'test',
                 context        => bless( {}, 'MyStub::SpanContext' ),
                 child_of       => bless( {}, 'MyStub::Span' ),
-            )->set_tag(
+            )->add_tag(
                 key3 => 'baz'
             )->get_tags( )
         },
@@ -68,7 +68,7 @@ subtest "Setting tags" => sub {
                 context        => bless( {}, 'MyStub::SpanContext' ),
                 child_of       => bless( {}, 'MyStub::Span' ),
                 tags           => { key1 => 'foo', key2 => 'bar' },
-            )->set_tag(
+            )->add_tag(
                 key1 => 'qux',
             )->get_tags( )
         },
@@ -76,7 +76,7 @@ subtest "Setting tags" => sub {
             key1 => 'qux',
             key2 => 'bar',
         },
-        "Will overwrite already existing tag... it's called 'set_tag'"
+        "Will overwrite already existing tag... it's called 'add_tag'"
     );
     
     cmp_deeply(
@@ -86,7 +86,7 @@ subtest "Setting tags" => sub {
                 context        => bless( {}, 'MyStub::SpanContext' ),
                 child_of       => bless( {}, 'MyStub::Span' ),
                 tags           => { key1 => 'foo', key2 => 'bar' },
-            )->set_tags(
+            )->add_tags(
                 key1 => 'qux',
                 key3 => 'foo',
             )->get_tags( )
@@ -96,7 +96,7 @@ subtest "Setting tags" => sub {
             key2 => 'bar',
             key3 => 'foo',
         },
-        "Works okay with mutiply key/value pairs when calling 'set_tags'"
+        "Works okay with mutiply key/value pairs when calling 'add_tags'"
     );
     
 };

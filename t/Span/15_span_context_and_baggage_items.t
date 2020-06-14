@@ -29,7 +29,7 @@ subtest "Set a single baggage_item" => sub {
     or return;
     
     lives_ok {
-        $test_span->set_baggage_item( item_2 => 'bar' );
+        $test_span->add_baggage_item( item_2 => 'bar' );
     } "Did set a new baggage item [item_2]"
     
     or return;
@@ -81,7 +81,7 @@ subtest "Set multiple baggage_items" => sub {
     or return;
     
     lives_ok {
-        $test_span->set_baggage_items(
+        $test_span->add_baggage_items(
             item_2 => 'qux',
             item_3 => 'baz',
         );

@@ -28,6 +28,8 @@ before_script:
 test:unit:
   stage: test
   script:
+    - cpanm VANHOESEL/Test-OpenTracing-Interface-v0.20.1.tar.gz
+    - cpanm VANHOESEL/OpenTracing-Interface-v0.201.2.tar.gz
     - cpanm --installdeps .
     - OPENTRACING_INTERFACE=1 prove -MDevel::Cover -l -I lib -r
   coverage: /Totals+.+s(d+.d+?)$/

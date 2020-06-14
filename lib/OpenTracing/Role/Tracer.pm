@@ -56,13 +56,6 @@ has scope_manager => (
     required        => 1,
 );
 
-
-
-requires 'extract_context';
-
-requires 'inject_context';
-
-
 has default_span_context_args => (
     is              => 'ro',
     isa             => HashRef[Str],
@@ -186,6 +179,10 @@ sub start_span {
     return $span
 }
 
+instance_method extract_context(
+    Str    $carrier_format,
+    Object $carrier
+) :ReturnMaybe(SpanContext) {}
 
 
 =head1 REQUIRES
@@ -197,6 +194,11 @@ The followin must be implemented by consuming class
 
 
 =head2 build_span
+instance_method inject_context(
+    Str    $carrier_format,
+    Object $carrier,
+    SpanContext $span_context
+) :Return(Object) {}
 
 =cut
 

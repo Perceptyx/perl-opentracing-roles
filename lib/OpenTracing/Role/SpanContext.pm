@@ -102,7 +102,17 @@ sub get_baggage_item {
     return { $self->get_baggage_items() }->{ $item_key }
 }
 
+sub new_clone {
+    my $self = shift;
+    
+    my $class = ref $self;
+    
+    $class->new( %$self )
+}
 
+sub with_trace_id { $_[0]->clone_with( trace_id => $_[1] ) }
+
+sub with_span_id { $_[0]->clone_with( span_id => $_[1] ) }
 
 # with_baggage_item
 #
@@ -111,7 +121,7 @@ sub get_baggage_item {
 sub with_baggage_item {
     my ( $self, $key, $value ) = @_;
     
-    $self->_clone(
+    $self->clone_with(
         baggage_items => { $self->get_baggage_items(), $key => $value },
     );
 }
@@ -124,17 +134,12 @@ sub with_baggage_item {
 sub with_baggage_items {
     my ( $self, %args ) = @_;
     
-    $self->_clone(
+    $self->clone_with(
         baggage_items => { $self->get_baggage_items(), %args },
     );
 }
 
-
-# _clone
-#
-# Creates a shallow clone of the object, which is fine
-#
-sub _clone {
+sub clone_with {
     my ( $self, @args ) = @_;
     
     bless { %$self, @args }, ref $self;

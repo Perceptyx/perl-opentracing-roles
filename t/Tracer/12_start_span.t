@@ -1,4 +1,4 @@
-use Test::Most tests => 1;
+use Test::Most tests => 2;
 use Test::Deep qw/true false/;
 use Test::MockObject::Extends;
 
@@ -51,9 +51,15 @@ $ENV{OPENTRACING_INTERFACE} = 1 unless exists $ENV{OPENTRACING_INTERFACE};
 
 subtest "Pass through to 'build_span' with known options" => sub {
     
-    plan tests => 4;
+    plan tests => 8;
     
     my ($call_name, $call_args);
+    
+    my $some_span_context  = bless {
+        trace_id => '9f3a2',
+        span_id  => '13ba5',
+        baggage_items => { client_id => 'f38b0' },
+    }, 'MyStub::SpanContext';
     
     my $mock_tracer = Test::MockObject::Extends->new(
         MyStub::Tracer->new(
@@ -62,10 +68,6 @@ subtest "Pass through to 'build_span' with known options" => sub {
     )->mock( 'build_span' =>
         sub { bless {}, 'MyStub::Span' }
     );
-    
-    my $some_span_context  = bless {}, 'MyStub::SpanContext';
-    
-    
     
     lives_ok {
         $mock_tracer
@@ -78,7 +80,6 @@ subtest "Pass through to 'build_span' with known options" => sub {
     } "Can call 'start_span' with known options"
     
     or return;
-    
     
     ($call_name, $call_args) = $mock_tracer->next_call();
     
@@ -97,13 +98,122 @@ subtest "Pass through to 'build_span' with known options" => sub {
             child_of           => $some_span_context,
             start_time         => 1.25,
             tags               => { foo => 1, bar => 6 },
-            context            => $some_span_context,
+            context            => isa('MyStub::SpanContext'),
         },
         "... with the expected pre-processed options"
     );
     
+    my $pass_span_context = { @{$call_args} }->{context};
+    
+    isnt $some_span_context, $pass_span_context,
+        "The passed on context is not the same, we should have a 'new_clone'";
+
+    is $pass_span_context->trace_id, '9f3a2',
+        "... with the expected 'trace_id' [9f3a2]";
+    
+    isnt $pass_span_context->span_id, '13ba5',
+        "... and has a 'span_id' that is different from the original [13ba5]";
+    
+    cmp_deeply(
+        { $pass_span_context->get_baggage_items },
+        {
+            client_id => 'f38b0',
+        },
+        "... with the expected 'baggage_items'"
+    );
+    
 };
 
+
+
+subtest "Use 'default_context' when no 'child_of' and no 'active_span'" => sub {
+    
+    plan tests => 8;
+    
+    my ($call_name, $call_args);
+    
+    my $some_span_context  = bless {
+        trace_id => '9f3a2',
+        span_id  => '13ba5',
+        baggage_items => { client_id => 'f38b0' },
+    }, 'MyStub::SpanContext';
+    
+    my $mock_tracer = Test::MockObject::Extends->new(
+        MyStub::Tracer->new(
+            scope_manager => bless( {}, 'MyStub::ScopeManager' ),
+            default_span_context_args => { baz => 7, qux => 5 },
+        )
+    )->mock( 'build_context' =>
+        sub { return $some_span_context }
+    )->mock( 'build_span' =>
+        sub { bless {}, 'MyStub::Span' }
+    )->mock( 'get_active_span' =>
+        sub { undef }
+    );
+    
+    lives_ok {
+        $mock_tracer
+            ->start_span( 'some operation name',
+                ignore_active_span   => undef,
+                start_time           => 1.25,
+                tags                 => { foo => 1, bar => 6 },
+            );
+    } "Can call 'start_span' without 'child_of', and no 'ignore_active_span'"
+    
+    or return;
+    
+    
+    
+    ($call_name, $call_args) = $mock_tracer->next_call();
+    
+    is( $call_name, 'get_active_span',
+        "... and did call 'get_active_span', because no 'ignore_active_span'"
+    );
+    
+    
+    
+    ($call_name, $call_args) = $mock_tracer->next_call();
+    
+    is( $call_name, 'build_context',
+        "... and did call 'build_context', 'undef' from 'ignore_active_span'"
+    );
+    
+    is( shift @{$call_args}, $mock_tracer,
+        "... with the invocant is the 'MyMock::Tracer'"
+    );
+    
+    cmp_deeply(
+        { @{$call_args} },
+        { baz => 7, qux => 5},
+        "... with the expected pre-processed options for 'build_context'"
+    );
+    
+    
+    
+    ($call_name, $call_args) = $mock_tracer->next_call();
+    
+    is( $call_name, 'build_span',
+        "... and did pass on to 'build_span''"
+    );
+    
+    is( shift @{$call_args}, $mock_tracer,
+        "... with the invocant is the 'MyMock::Tracer'"
+    );
+    
+    cmp_deeply(
+        { @{$call_args} },
+        {
+            operation_name     => 'some operation name',
+            child_of           => undef,
+            start_time         => 1.25,
+            tags               => { foo => 1, bar => 6 },
+            context            => $some_span_context,
+        },
+        "... with the expected pre-processed options for 'build_span'"
+    );
+    
+    
+};
 
 
 done_testing();
@@ -121,6 +231,7 @@ package MyStub::Tracer;
 use Moo;
 
 sub build_span          { ... }
+sub build_context       { ... }
 sub extract_context     { ... }
 sub inject_context      { ... }
 

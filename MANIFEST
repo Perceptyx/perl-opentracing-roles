@@ -42,6 +42,8 @@ t/SpanContext/00_use_ok.t
 t/SpanContext/01_can_all_ok.t
 t/SpanContext/01_interface_ok.t
 t/SpanContext/10_baggage_items.t
+t/SpanContext/11_with_span_id.t
+t/SpanContext/11_with_trace_id.t
 t/Tracer/00_use_ok.t
 t/Tracer/01_can_all_ok.t
 t/Tracer/01_interface_ok.t

@@ -13,6 +13,7 @@ package MyStub::Tracer;
 use Moo;
 
 sub build_span          { ... }
+sub build_context       { ... }
 sub extract_context     { ... }
 sub inject_context      { ... }
 

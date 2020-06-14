@@ -63,6 +63,11 @@ requires 'extract_context';
 requires 'inject_context';
 
 
+has default_span_context_args => (
+    is              => 'ro',
+    isa             => HashRef[Str],
+    default         => sub{ {} },
+);
 
 sub get_active_span {
     my $self = shift;
@@ -151,25 +156,19 @@ sub start_span {
     $child_of //= $self->get_active_span()
         unless $ignore_active_span;
     
-#   $child_of->does(') ?
+    my $context;
+
+    $context = $child_of
+        if is_SpanContext($child_of);
     
-    my $context =
-        defined $child_of
-        && 
-#       $child_of->does('OpenTracing::Interface::SpanContext')
-        $child_of->can('with_baggage_item')
-        &&
-        $child_of->can('get_baggage_item')
-        #
-        # 'does' does not work, then just check on most essential methods
-        # TODO: use OpenTracing::Types
-        #
-        ?
-        $child_of : $self->get_active_span_context();
-        #
-        # TODO: figure out why we want to get the active span it's context
-        #       what if we have passed in a span, should we take it's context?
-        #       is it more relevant to have the 'active context' at all times?
+    $context = $child_of->get_context
+        if is_Span($child_of);
+    
+    $context = $context->new_clone->with_trace_id( $context->trace_id )
+        if is_SpanContext($context);
+    
+    $context = $self->build_context( %{$self->default_span_context_args} )
+        unless defined $context;
     
     my $span = $self->build_span(
         operation_name => $operation_name,
@@ -202,14 +201,18 @@ The followin must be implemented by consuming class
 =cut
 
 instance_method build_span (
-    
-    Str                   :$operation_name,
-    SpanContext | Span    :$child_of,
-    SpanContext | HashRef :$context,
-    PositiveOrZeroNum     :$start_time      = undef,
-    HashRef[Str]          :$tags            = {},
-    
+    Str                :$operation_name,
+    SpanContext | Span :$child_of,
+    SpanContext        :$context,
+    PositiveOrZeroNum  :$start_time      = undef,
+    HashRef[Str]       :$tags            = {},
 ) :Return (Span) { };
+
+instance_method build_context (
+    %default_span_context_args,
+) :Return (SpanContext) {
+    ( HashRef[Str] )->assert_valid( { %default_span_context_args } );
+};
 
 
 

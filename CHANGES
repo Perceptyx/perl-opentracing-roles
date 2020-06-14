@@ -2,6 +2,21 @@ CHANGE LOG
 ==========
 
 
+2020-06-14 - v0.80.0 TRIAL_006
+------------------------------
+
+### Fixes
+    - Fix compliance to use NoOp ScopeManager instead of being required
+
+### Changed
+    - Add and rename method because of OT::Interface changed
+    - use `build_context` instead of `default_context`
+    - Move `span_id` from `Span` to `SpanContext`
+
+### Added
+    - POD files
+
+
 2020-06-08 - v0.08_005
 ----------------------
 

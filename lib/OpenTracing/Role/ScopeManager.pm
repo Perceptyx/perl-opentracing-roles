@@ -25,8 +25,6 @@ our $VERSION = '0.08_005';
 use Moo::Role;
 
 use Carp;
-
-use Types::Standard qw/Bool CodeRef Dict Maybe/;
 use OpenTracing::Types qw/Scope Span assert_Scope/;
 use Role::Declare;
 
@@ -38,6 +36,7 @@ This is a role for OpenTracing implenetations that are compliant with the
 L<OpenTracing::Interface>.
 
 =cut
+use Types::Standard qw/Bool CodeRef Dict Maybe/;
 
 # The chosen design is to have only 1 active scope and use callback to change
 # what the 'previous' scope would be when we close a scope.
@@ -45,7 +44,7 @@ L<OpenTracing::Interface>.
 # An other design could be building a stack, using 'push/pop' to keep track of
 # which one to activate on close.
 #
-has _active_scope => (
+has active_scope => (
     is => 'rwp',
     isa => Scope,
     init_arg => undef,
@@ -86,12 +85,6 @@ parameters.
 =cut
 
 
-instance_method build_scope (
-    
-    Span :$span,
-    Bool :$finish_span_on_close
-    
-) :Return ( Scope ) { };
 
 
 
@@ -154,6 +147,11 @@ sub activate_span {
     
     return $scope
 }
+
+instance_method build_scope (
+    Span :$span,
+    Bool :$finish_span_on_close
+) :Return ( Scope ) { };
 
 
 

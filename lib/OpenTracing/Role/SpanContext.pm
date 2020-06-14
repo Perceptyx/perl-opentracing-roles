@@ -61,10 +61,11 @@ updating any values of the the attributes.
 
 
 has trace_id => (
-    is              => 'ro',
+    is              => 'rw',
 #   isa             => Uuid, # not restraints here, do so when consuming this
     init_arg        => undef,
     default         => sub { Data::GUID->new },
+    trigger         => Lock,
 );
 
 

@@ -26,10 +26,10 @@ our $VERSION = '0.08_005';
 
 use Moo::Role;
 
+use Carp;
 use OpenTracing::Types qw/Span/;
 use Types::Standard qw/Bool CodeRef Maybe/;
 
-use Carp;
 
 
 

@@ -10,8 +10,8 @@ use Moo::Role;
 use MooX::Enumeration;
 use MooX::ProtectedAttributes;
 
-use Types::Standard qw/Enum/;
 use OpenTracing::Types qw/SpanContext/;
+use Types::Standard qw/Enum/;
 
 use constant CHILD_OF     => 'child_of';
 use constant FOLLOWS_FROM => 'follows_from';

@@ -29,10 +29,10 @@ use MooX::HandlesVia;
 
 use Carp;
 use Data::GUID;
+use OpenTracing::Types qw/:types :is/;
 use Time::HiRes qw/time/;
 use Types::Standard qw/CodeRef HashRef Maybe Num Object Str Value/;
 use Types::Common::Numeric qw/PositiveOrZeroNum/;
-use OpenTracing::Types qw/:types :is/;
 
 
 
@@ -260,7 +260,7 @@ sub duration {
 
 has child_of => (
     is => 'ro',
-    isa =>Object, # does Span or does SpanContext
+    isa => Span | SpanContext,
     required => 1,
 );
 

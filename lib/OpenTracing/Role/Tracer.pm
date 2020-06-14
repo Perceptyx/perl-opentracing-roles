@@ -31,11 +31,11 @@ our $VERSION = '0.08_005';
 use Moo::Role;
 
 use Carp;
-use OpenTracing::Types qw/ScopeManager Span SpanContext/;
+use OpenTracing::Types qw/ScopeManager Span SpanContext is_Span is_SpanContext/;
+use Ref::Util qw/is_plain_hashref/;
 use Role::Declare;
 use Try::Tiny;
 use Types::Common::Numeric qw/PositiveOrZeroNum/;
-use Types::Standard qw/HashRef Str/;
 
 
 
@@ -47,6 +47,7 @@ L<OpenTracing::Interface>.
 =cut
 
 
+use Types::Standard qw/HashRef Object Str/;
 
 has scope_manager => (
     is              => 'ro',

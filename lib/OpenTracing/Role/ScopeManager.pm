@@ -1,6 +1,6 @@
 package OpenTracing::Role::ScopeManager;
 
-our $VERSION = 'v0.80.0-TRIAL_006';
+our $VERSION = 'v0.80.0-TRIAL_007';
 
 use Moo::Role;
 

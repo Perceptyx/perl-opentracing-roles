@@ -226,11 +226,13 @@ for a description.
 
 =over
 
-=item L<OpenTracing::Role>
+=item L<OpenTracing::Types>
 
-=item L<OpenTracing::Implementation>
+Type constraints for checking Interfaces
 
 =item L<OpenTracing::Interface::Tracer>
+
+A role that defines the Tracer interface
 
 =back
 

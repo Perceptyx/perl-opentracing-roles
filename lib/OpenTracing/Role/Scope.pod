@@ -77,7 +77,7 @@ A L<Span|OpenTracing::Types/"Span"> type.
 A L<Bool|Types::Standard/"Bool"> type.
 
 See
-L<< C<start_active_span>| OpenTracing::Interface::Tracer/"start_active_span>>.
+L<< C<start_active_span>|OpenTracing::Interface::Tracer/"start_active_span" >>.
 
 
 

@@ -230,11 +230,13 @@ Creates a clone of the current object, with list of kew/value pairs added.
 
 =over
 
-=item L<OpenTracing::Role>
+=item L<OpenTracing::Types>
 
-=item L<OpenTracing::Implementation>
+Type constraints for checking Interfaces
 
 =item L<OpenTracing::Interface::SpanContext>
+
+A role that defines the SpanContext interface
 
 =back
 

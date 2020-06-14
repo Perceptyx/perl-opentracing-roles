@@ -28,7 +28,6 @@ use Moo::Role;
 use MooX::HandlesVia;
 
 use Carp;
-use Data::GUID;
 use OpenTracing::Types qw/:types :is/;
 use Time::HiRes qw/time/;
 use Types::Standard qw/CodeRef HashRef Maybe Num Object Str Value/;
@@ -46,15 +45,6 @@ C<finish()> must be the last call made to any span instance, and to do otherwise
 leads to undefined behavior (but not returning an exception).
 
 =cut
-
-
-
-has span_id => (
-    is              => 'ro',
-#   isa             => Uuid, # not restraints here, do so when consuming this
-    init_arg        => undef,
-    default         => sub { Data::GUID->new },
-);
 
 
 

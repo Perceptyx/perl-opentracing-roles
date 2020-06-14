@@ -68,6 +68,13 @@ has trace_id => (
     trigger         => Lock,
 );
 
+has span_id => (
+    is              => 'rw',
+#   isa             => Uuid, # not restraints here, do so when consuming this
+    init_arg        => undef,
+    default         => sub { Data::GUID->new },
+    trigger         => Lock,
+);
 
 
 # baggage_items

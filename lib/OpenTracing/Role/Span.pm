@@ -50,6 +50,9 @@ has context => (
     reader          => 'get_context',
 #   writer          => '_set_context',
     required        => 1, # either from Span->get_context or SpanContext self
+    handles         => {
+        get_span_id     => 'span_id',
+    },
 );
 
 sub overwrite_operation_name {

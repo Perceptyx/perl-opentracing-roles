@@ -241,6 +241,24 @@ not.
 
 
 
+=head2 C<get_span_id>
+
+The identifier of the C<Span> itself, through its span context.
+
+=over
+
+=item Returns
+
+=over
+
+=item C<Uuid>
+
+=back
+
+=back
+
+
+
 =head2 C<parent_span_id>
 
 The identifier of the parent C<Span>

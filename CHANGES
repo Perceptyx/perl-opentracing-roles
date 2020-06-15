@@ -1,6 +1,16 @@
 CHANGE LOG
 ==========
 
+2020-06-15 - v0.81.0
+--------------------
+
+### Changed
+    - Rename method to `get_parent_span_id`
+
+### Added
+    - `get_span_id`, through its `context` attribute
+
+
 2020-06-15 - v0.80.0
 --------------------
 

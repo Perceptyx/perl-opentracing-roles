@@ -1,6 +1,6 @@
 package OpenTracing::Role::Tracer;
 
-our $VERSION = 'v0.80.0';
+our $VERSION = 'v0.81.0';
 
 use Moo::Role;
 

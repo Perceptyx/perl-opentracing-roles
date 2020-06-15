@@ -182,7 +182,7 @@ L<< C<add_baggage_items> >>.
 
 =head2 C<child_of>
 
-A required C<Span> or C<SpanContext>.
+A B<optional> C<Span> or C<SpanContext>.
 
 Note: this may not be the correct design and this attribute may disapear.
 
@@ -241,7 +241,25 @@ not.
 
 
 
-=head2 C<parent_span_id>
+=head2 C<get_span_id>
+
+The identifier of the C<Span> itself, through its span context.
+
+=over
+
+=item Returns
+
+=over
+
+=item C<Uuid>
+
+=back
+
+=back
+
+
+
+=head2 C<get_parent_span_id>
 
 The identifier of the parent C<Span>
 

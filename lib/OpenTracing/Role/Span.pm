@@ -6,6 +6,7 @@ our $VERSION = 'v0.80.0';
 
 use Moo::Role;
 use MooX::HandlesVia;
+use MooX::ProtectedAttributes;
 
 use Carp;
 use OpenTracing::Types qw/:types :is/;
@@ -50,6 +51,9 @@ has context => (
     reader          => 'get_context',
 #   writer          => '_set_context',
     required        => 1, # either from Span->get_context or SpanContext self
+    handles         => {
+        get_span_id     => 'span_id',
+    },
 );
 
 sub overwrite_operation_name {
@@ -184,19 +188,36 @@ sub duration {
     return $finish_time - $start_time
 }
 
-has child_of => (
+protected_has child_of => (
     is => 'ro',
     isa => Span | SpanContext,
-    required => 1,
+    required => 0,
 );
+#
+# this is just non of your business, and will get depricated as soon as there is
+# references
 
-sub parent_span_id {
+sub get_child_of { $_[0]->child_of }
+#
+# so this can be swapped for something more clever once using references
+
+sub get_parent_span_id {
     my $self = shift;
     
-    my $parent = $self->{ child_of };
-    return unless is_Span( $parent );
+    my $child_of = $self->get_child_of;
     
-    return $parent->span_id
+    return unless defined $child_of;
+    
+    return $child_of->span_id
+        if is_SpanContext($child_of);
+    
+    return $child_of->get_context->span_id
+        if is_Span($child_of);
+    
+    croak "No 'parent span_id' for 'child_of' attribute [$child_of]"
+    #
+    # execution should never end up here
+    
 }
 #
 # This may not be the right way to implement it, for the `child_of` attribute

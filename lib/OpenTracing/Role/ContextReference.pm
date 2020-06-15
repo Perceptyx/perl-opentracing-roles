@@ -1,6 +1,6 @@
 package OpenTracing::Role::ContextReference;
 
-our $VERSION = 'v0.80.0-TRIAL_007';
+our $VERSION = 'v0.80.0';
 
 use Moo::Role;
 use MooX::Enumeration;

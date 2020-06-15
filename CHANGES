@@ -1,81 +1,15 @@
 CHANGE LOG
 ==========
 
-
-2020-06-14 - v0.80.0 TRIAL_007
-------------------------------
-
-### Fixes
-    - POD errors
-
-
-2020-06-14 - v0.80.0 TRIAL_006
-------------------------------
-
-### Fixes
-    - Fix compliance to use NoOp ScopeManager instead of being required
+2020-06-15 - v0.80.0
+--------------------
 
 ### Changed
-    - Add and rename method because of OT::Interface changed
-    - use `build_context` instead of `default_context`
-    - Move `span_id` from `Span` to `SpanContext`
+    - Add and Rename methods from the OpenTracing::Interface
 
 ### Added
-    - POD files
-
-
-2020-06-08 - v0.08_005
-----------------------
-
-### Fixes
-    - issues with cloning, where `trace_id` would get new random value
-    - issues with `instance_method build_span`
-
-
-2020-06-04 - v0.08_004
-----------------------
-
-### Changed
-    - move `trace_id`
-
-
-2020-05-29 - v0.08_003
-----------------------
-
-### Changed
-    - `build_scope` and `build_span` have well defined parameter lists
-
-### Added
-    - documented index of related modules
-    - much more tests
-
-
-2020-05-20 - v0.08_002
-----------------------
-
-### Changed
-    - `on_close`
-    - `on_finish` instead of on_DEMOLISH, so we can call it early
-
-
-2020-05-20 - v0.08_001
-----------------------
-
-### Changed
-    - use `OpenTracing::Types` where possible
-
-### Added
-    - state `closed` for Scope
-    - state `span_id` which defaults to UUID
-    - method `get_operation_name` as getter
-    - method `set_tags` to set more than one
-    - method `set_baggage_items`
-    - method `get_baggage_items`
-    - state `child_of`
-    - method `parent_span_id`
-    - method `get_baggage_item`
-
-### Added hundreds of test
+    - All methods from the API definition are now covered.
+    - Tests, test, and more tests.
 
 
 2020-06-14 - v0.70.1

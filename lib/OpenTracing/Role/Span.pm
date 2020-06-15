@@ -6,6 +6,7 @@ our $VERSION = 'v0.80.0';
 
 use Moo::Role;
 use MooX::HandlesVia;
+use MooX::ProtectedAttributes;
 
 use Carp;
 use OpenTracing::Types qw/:types :is/;
@@ -187,11 +188,18 @@ sub duration {
     return $finish_time - $start_time
 }
 
-has child_of => (
+protected_has child_of => (
     is => 'ro',
     isa => Span | SpanContext,
     required => 1,
 );
+#
+# this is just non of your business, and will get depricated as soon as there is
+# references
+
+sub get_child_of { $_[0]->child_of }
+#
+# so this can be swapped for something more clever once using references
 
 sub parent_span_id {
     my $self = shift;

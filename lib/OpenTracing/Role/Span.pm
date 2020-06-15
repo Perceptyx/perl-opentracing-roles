@@ -204,10 +204,20 @@ sub get_child_of { $_[0]->child_of }
 sub get_parent_span_id {
     my $self = shift;
     
-    my $parent = $self->{ child_of };
-    return unless is_Span( $parent );
+    my $child_of = $self->get_child_of;
     
-    return $parent->span_id
+    return unless defined $child_of;
+    
+    return $child_of->span_id
+        if is_SpanContext($child_of);
+    
+    return $child_of->get_context->span_id
+        if is_Span($child_of);
+    
+    croak "No 'parent span_id' for 'child_of' attribute [$child_of]"
+    #
+    # execution should never end up here
+    
 }
 #
 # This may not be the right way to implement it, for the `child_of` attribute

@@ -191,7 +191,7 @@ sub duration {
 protected_has child_of => (
     is => 'ro',
     isa => Span | SpanContext,
-    required => 1,
+    required => 0,
 );
 #
 # this is just non of your business, and will get depricated as soon as there is

@@ -182,7 +182,7 @@ L<< C<add_baggage_items> >>.
 
 =head2 C<child_of>
 
-A required C<Span> or C<SpanContext>.
+A B<optional> C<Span> or C<SpanContext>.
 
 Note: this may not be the correct design and this attribute may disapear.
 

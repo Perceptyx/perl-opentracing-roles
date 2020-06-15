@@ -259,7 +259,7 @@ The identifier of the C<Span> itself, through its span context.
 
 
 
-=head2 C<parent_span_id>
+=head2 C<get_parent_span_id>
 
 The identifier of the parent C<Span>
 

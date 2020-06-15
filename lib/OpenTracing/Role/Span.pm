@@ -201,7 +201,7 @@ sub get_child_of { $_[0]->child_of }
 #
 # so this can be swapped for something more clever once using references
 
-sub parent_span_id {
+sub get_parent_span_id {
     my $self = shift;
     
     my $parent = $self->{ child_of };

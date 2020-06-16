@@ -105,23 +105,6 @@ See L<OpenTracing::Interface::Span/"add_baggage_items">.
 
 
 
-=head2 C<get_baggage_item>
-
-Returns either the corresponding baggage value, or C<undef> when such a value
-was missing.
-
-See L<OpenTracing::Interface::Span/"get_baggage_item">.
-
-
-
-=head2 C<get_baggage_items>
-
-This will return a Hash of key/value pairs.
-
-See L<OpenTracing::Interface::Span/"get_baggage_items">.
-
-
-
 =head1 WARNING
 
 B<Never use any of attributes or methods below in any integration!>
@@ -200,7 +183,10 @@ Its usefulnes currently is for dealing with c<span> inside C<Tracer>.
 See L<< C<finish> >>.
 
 
-=head1 INSTANCE METHODS
+=head1 ADDITONAL INSTANCE METHODS
+
+These methods are just for the convenience building an implementation, and are
+not part of the OpenTracing Interface..
 
 
 
@@ -209,6 +195,14 @@ See L<< C<finish> >>.
 The accessor for the L<< C<operatation_name> >>
 
 =over
+
+=item Parameter(s)
+
+=over
+
+I<none>
+
+=back
 
 =item Returns
 
@@ -229,6 +223,14 @@ not.
 
 =over
 
+=item Parameter(s)
+
+=over
+
+I<none>
+
+=back
+
 =item Returns
 
 =over
@@ -247,6 +249,14 @@ The identifier of the C<Span> itself, through its span context.
 
 =over
 
+=item Parameter(s)
+
+=over
+
+I<none>
+
+=back
+
 =item Returns
 
 =over
@@ -264,6 +274,14 @@ The identifier of the C<Span> itself, through its span context.
 The identifier of the parent C<Span>
 
 =over
+
+=item Parameter(s)
+
+=over
+
+I<none>
+
+=back
 
 =item Returns
 
@@ -284,6 +302,14 @@ L<< C<start_time> >> or L<< C<finish_time> >> has not been set yet.
 
 =over
 
+=item Parameter(s)
+
+=over
+
+I<none>
+
+=back
+
 =item Returns
 
 =over
@@ -303,11 +329,111 @@ the usual integer number of seconds since epoch.
 
 =over
 
+=item Parameter(s)
+
+=over
+
+I<none>
+
+=back
+
 =item Returns
 
 =over
 
 =item C<Num> number of seconds since epoch
+
+=back
+
+=back
+
+
+
+=head2 C<get_tags>
+
+This will return a Hash of key/value pairs.
+
+=over
+
+=item Parameter(s)
+
+=over
+
+I<none>
+
+=back
+
+=item Returns
+
+=over
+
+=item C<Hash>, not a C<HashReference>
+
+=back
+
+=back
+
+See L<OpenTracing::Interface::Span/"add_tag">.
+
+
+
+=head2 C<get_baggage_item>
+
+Returns either the corresponding baggage value, or C<undef> when such a value
+was missing.
+
+    my $baggage_value = $span->get_baggage_item( $baggage_key );
+
+=over
+
+=item Required Positional Parameters
+
+=over
+
+=item baggage_key, a B<required> C<Str>
+
+=back
+
+=item Returns
+
+=over
+
+=item Maybe a C<Value>
+
+The value of the requested baggage item, or C<undef> when such a value was
+missing.
+
+=back
+
+=back
+
+
+
+=head2 C<get_baggage_items>
+
+This will return a Hash of key/value pairs.
+
+    my %baggage_items = $span->get_baggage_items;
+
+It will return an empty list if there is no key/value pairs set.
+
+=over
+
+=item Positional Parameter(s)
+
+=over
+
+I<none>
+
+=back
+
+=item Returns
+
+=over
+
+=item C<Hash>
+
+A list of key/value pairs, not a hash reference!
 
 =back
 

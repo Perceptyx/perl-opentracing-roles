@@ -1,6 +1,6 @@
 package OpenTracing::Role::SpanContext;
 
-our $VERSION = 'v0.81.1';
+our $VERSION = 'v0.81.2';
 
 use Moo::Role;
 use MooX::HandlesVia;

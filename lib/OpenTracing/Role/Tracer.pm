@@ -79,7 +79,7 @@ sub start_span {
         unless $ignore_active_span;
     
     my $context;
-
+    
     $context = $child_of
         if is_SpanContext($child_of);
     
@@ -95,13 +95,13 @@ sub start_span {
     my $span = $self->build_span(
         operation_name => $operation_name,
         context        => $context,
-
+        
         maybe
         child_of       => $child_of,
-
+        
         maybe
         start_time     => $start_time,
-
+        
         maybe
         tags           => $tags,
     );
@@ -133,12 +133,19 @@ instance_method build_span (
     Maybe[ HashRef[Str] ]       :$tags,
 ) :Return (Span) { };
 
+
 instance_method build_context (
-    %default_span_context_args,
+    %span_context_args,
 ) :Return (SpanContext) {
-    ( HashRef[Str] )->assert_valid( { %default_span_context_args } );
+    ( HashRef[Str] )->assert_valid( { %span_context_args } );
 };
 
+
+around build_context => sub {
+    my $orig = shift;
+    my $self = shift;
+    $orig->($self, %{ $self->default_span_context_args }, @_ )
+};
 
 
 BEGIN {

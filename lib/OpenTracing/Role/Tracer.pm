@@ -23,12 +23,6 @@ has scope_manager => (
     },
 );
 
-has default_span_context_args => (
-    is              => 'ro',
-    isa             => HashRef[Str],
-    default         => sub{ {} },
-);
-
 sub get_active_span {
     my $self = shift;
     
@@ -89,7 +83,7 @@ sub start_span {
     $context = $context->new_clone->with_trace_id( $context->trace_id )
         if is_SpanContext($context);
     
-    $context = $self->build_context( %{$self->default_span_context_args} )
+    $context = $self->build_context( )
         unless defined $context;
     
     my $span = $self->build_span(
@@ -138,13 +132,6 @@ instance_method build_context (
     %span_context_args,
 ) :Return (SpanContext) {
     ( HashRef[Str] )->assert_valid( { %span_context_args } );
-};
-
-
-around build_context => sub {
-    my $orig = shift;
-    my $self = shift;
-    $orig->($self, %{ $self->default_span_context_args }, @_ )
 };
 
 

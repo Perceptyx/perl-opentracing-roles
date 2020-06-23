@@ -1,6 +1,13 @@
 CHANGE LOG
 ==========
 
+2020-06-23 - v0.82.0
+--------------------
+
+### Removed
+    - no longer use `default_span_context_args`, implementation take care of it
+
+
 2020-06-18 - v0.81.3
 --------------------
 

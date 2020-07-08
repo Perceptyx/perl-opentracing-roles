@@ -11,7 +11,7 @@ use Ref::Util qw/is_plain_hashref/;
 use Role::Declare -lax;
 use Try::Tiny;
 use Types::Common::Numeric qw/PositiveOrZeroNum/;
-use Types::Standard qw/Maybe HashRef Object Str/;
+use Types::Standard qw/Maybe HashRef Object Str ArrayRef/;
 
 has scope_manager => (
     is              => 'ro',
@@ -106,17 +106,19 @@ sub start_span {
     return $span
 }
 
+use constant Carrier => Object | HashRef | ArrayRef;
+
 instance_method extract_context(
-    Str    $carrier_format,
-    Object $carrier
+    Str     $carrier_format,
+    Carrier $carrier
 ) :ReturnMaybe(SpanContext) {}
 
 
 instance_method inject_context(
-    Str    $carrier_format,
-    Object $carrier,
+    Str         $carrier_format,
+    Carrier     $carrier,
     SpanContext $span_context
-) :Return(Object) {}
+) :Return(ContextCarrier) {}
 
 
 instance_method build_span (

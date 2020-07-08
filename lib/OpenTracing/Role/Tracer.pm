@@ -109,16 +109,14 @@ sub start_span {
 use constant Carrier => Object | HashRef | ArrayRef;
 
 instance_method extract_context(
-    Str     $carrier_format,
-    Carrier $carrier
+    Carrier                     $carrier,
 ) :ReturnMaybe(SpanContext) {}
 
 
 instance_method inject_context(
-    Str         $carrier_format,
-    Carrier     $carrier,
-    SpanContext $span_context
-) :Return(ContextCarrier) {}
+    Carrier                     $carrier,
+    Maybe[ SpanContext ]        $span_context = undef,
+) :Return(Carrier) {}
 
 
 instance_method build_span (

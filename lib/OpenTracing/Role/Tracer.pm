@@ -106,18 +106,18 @@ sub start_span {
     return $span
 }
 
-use constant ContextCarrier => Object | HashRef | ArrayRef;
+use constant Carrier => Object | HashRef | ArrayRef;
 
 instance_method extract_context(
-    Str            $carrier_format,
-    ContextCarrier $carrier
+    Str     $carrier_format,
+    Carrier $carrier
 ) :ReturnMaybe(SpanContext) {}
 
 
 instance_method inject_context(
-    Str            $carrier_format,
-    ContextCarrier $carrier,
-    SpanContext    $span_context
+    Str         $carrier_format,
+    Carrier     $carrier,
+    SpanContext $span_context
 ) :Return(ContextCarrier) {}
 
 

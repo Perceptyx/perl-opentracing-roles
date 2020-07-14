@@ -208,6 +208,38 @@ sub _first_context_formatter_for_carrier {
 
 
 
+instance_method extract_context_from_array_reference(
+    ArrayRef                    $carrier,
+) :ReturnMaybe(SpanContext) {};
+
+instance_method extract_context_from_hash_reference(
+    HashRef                     $carrier,
+) :ReturnMaybe(SpanContext) {};
+
+instance_method extract_context_from_http_headers(
+    Object                      $carrier,
+) :ReturnMaybe(SpanContext) {
+    ( InstanceOf['HTTP::Headers'] )->assert_valid( $carrier )
+};
+
+instance_method inject_context_into_array_reference(
+    ArrayRef                    $carrier,
+    Maybe[ SpanContext ]        $span_context = undef,
+) :Return(ArrayRef) {};
+
+instance_method inject_context_into_hash_reference(
+    HashRef                     $carrier,
+    Maybe[ SpanContext ]        $span_context = undef,
+) :Return(HashRef) {};
+
+instance_method inject_context_into_array_reference(
+    Object                      $carrier,
+    Maybe[ SpanContext ]        $span_context = undef,
+) :Return(InstanceOf['HTTP::Headers']) {
+    ( InstanceOf['HTTP::Headers'] )->assert_valid( $carrier )
+};
+
+
 instance_method build_span (
     Str                         :$operation_name,
     SpanContext                 :$context,

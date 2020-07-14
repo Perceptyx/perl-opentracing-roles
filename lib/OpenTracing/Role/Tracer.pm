@@ -208,19 +208,6 @@ sub _first_context_formatter_for_carrier {
 
 
 
-use constant Carrier => Object | HashRef | ArrayRef;
-
-instance_method extract_context(
-    Carrier                     $carrier,
-) :ReturnMaybe(SpanContext) {}
-
-
-instance_method inject_context(
-    Carrier                     $carrier,
-    Maybe[ SpanContext ]        $span_context = undef,
-) :Return(Carrier) {}
-
-
 instance_method build_span (
     Str                         :$operation_name,
     SpanContext                 :$context,

@@ -2,8 +2,10 @@ package OpenTracing::Role::Tracer;
 
 our $VERSION = 'v0.83.0';
 
-use Moo::Role;
 use syntax qw/maybe/;
+
+use Moo::Role;
+use MooX::HandlesVia;
 
 use Carp;
 use OpenTracing::Types qw/ScopeManager Span SpanContext is_Span is_SpanContext/;
@@ -11,7 +13,10 @@ use Ref::Util qw/is_plain_hashref/;
 use Role::Declare -lax;
 use Try::Tiny;
 use Types::Common::Numeric qw/PositiveOrZeroNum/;
-use Types::Standard qw/Maybe HashRef Object Str ArrayRef/;
+use Types::Standard qw/ArrayRef CodeRef Dict HashRef InstanceOf Maybe Object Str /;
+use Types::TypeTiny qw/TypeTiny/;
+
+our @CARP_NOT;
 
 has scope_manager => (
     is              => 'ro',
@@ -105,6 +110,103 @@ sub start_span {
     
     return $span
 }
+
+
+
+sub extract_context {
+    my $self = shift;
+    my $carrier = shift;
+    my $context = shift;
+    
+    my $context_formatter =
+        $self->_first_context_formatter_for_carrier( $carrier );
+    
+    return $context_formatter->{extractor}->( $carrier )
+}
+
+
+
+sub inject_context {
+    my $self = shift;
+    my $carrier = shift;
+    my $context = shift;
+    
+    my $context_formatter =
+        $self->_first_context_formatter_for_carrier( $carrier );
+    
+    $context //= $self->get_active_context();
+    return $carrier unless defined $context;
+    return $context_formatter->{injector}->( $carrier, $context );
+}
+
+
+
+# XXX this is not a OpenTracing API method
+#
+sub get_active_context {
+    my $self = shift;
+    
+    my $active_span = $self->get_active_span
+        or return;
+    
+    return $active_span->get_context
+}
+
+
+
+use constant ContextFormatter => Dict[
+    type      => TypeTiny,
+    injector  => CodeRef,
+    extractor => CodeRef,
+];
+
+
+
+has context_formatters => (
+    is          => 'rw',
+    isa         => ArrayRef[ContextFormatter],
+    handles_via => 'Array',
+    handles     => {
+        register_context_formatter  => 'unshift',
+        known_context_formatters    => 'elements',
+    },
+    default     => \&_default_context_formatters,
+);
+
+sub _default_context_formatters {
+    [
+        {
+            type      => ArrayRef,
+            injector  => \&inject_context_into_array_reference,
+            extractor => \&extract_context_from_array_reference,
+        },
+        {
+            type      => HashRef,
+            injector  => \&inject_context_into_hash_reference,
+            extractor => \&extract_context_from_hash_reference,
+        },
+        {
+            type      => InstanceOf['HTTP::Headers'],
+            injector  => \&inject_context_into_http_headers,
+            extractor => \&extract_context_from_http_headers,
+        },
+    ]
+}
+
+sub _first_context_formatter_for_carrier {
+    my $self = shift;
+    my $carrier = shift;
+    
+    my $context_formatter = first { $_->{type}->check($carrier) }
+        $self->known_context_formatters;
+    
+    croak "Unsupported carrier format [" . ref($context_formatter) . "]\n"
+        unless defined $context_formatter;
+    
+    return $context_formatter
+}
+
+
 
 use constant Carrier => Object | HashRef | ArrayRef;
 

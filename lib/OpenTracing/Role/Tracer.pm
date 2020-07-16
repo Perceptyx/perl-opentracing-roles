@@ -8,12 +8,13 @@ use Moo::Role;
 use MooX::HandlesVia;
 
 use Carp;
+use List::Util qw/first/;
 use OpenTracing::Types qw/ScopeManager Span SpanContext is_Span is_SpanContext/;
 use Ref::Util qw/is_plain_hashref/;
 use Role::Declare -lax;
 use Try::Tiny;
 use Types::Common::Numeric qw/PositiveOrZeroNum/;
-use Types::Standard qw/ArrayRef CodeRef Dict HashRef InstanceOf Maybe Object Str /;
+use Types::Standard qw/ArrayRef CodeRef Dict HashRef InstanceOf Maybe Object Str Undef/;
 use Types::TypeTiny qw/TypeTiny/;
 
 our @CARP_NOT;
@@ -121,7 +122,8 @@ sub extract_context {
     my $context_formatter =
         $self->_first_context_formatter_for_carrier( $carrier );
     
-    return $context_formatter->{extractor}->( $carrier )
+    my $formatter = $context_formatter->{extractor};
+    return $self->$formatter( $carrier );
 }
 
 
@@ -136,7 +138,8 @@ sub inject_context {
     
     $context //= $self->get_active_context();
     return $carrier unless defined $context;
-    return $context_formatter->{injector}->( $carrier, $context );
+    my $formatter = $context_formatter->{injector};
+    return $self->$formatter( $carrier, $context );
 }
 
 
@@ -176,19 +179,24 @@ has context_formatters => (
 sub _default_context_formatters {
     [
         {
+            type      => Undef,
+            injector  => sub {undef                                          },
+            extractor => sub {undef                                          },
+        },
+        {
             type      => ArrayRef,
-            injector  => \&inject_context_into_array_reference,
-            extractor => \&extract_context_from_array_reference,
+            injector  => sub {shift->inject_context_into_array_reference(@_) },
+            extractor => sub {shift->extract_context_from_array_reference(@_)},
         },
         {
             type      => HashRef,
-            injector  => \&inject_context_into_hash_reference,
-            extractor => \&extract_context_from_hash_reference,
+            injector  => sub {shift->inject_context_into_hash_reference(@_)  },
+            extractor => sub {shift->extract_context_from_hash_reference(@_) },
         },
         {
             type      => InstanceOf['HTTP::Headers'],
-            injector  => \&inject_context_into_http_headers,
-            extractor => \&extract_context_from_http_headers,
+            injector  => sub {shift->inject_context_into_http_headers(@_)    },
+            extractor => sub {shift->extract_context_from_http_headers(@_)   },
         },
     ]
 }
@@ -200,7 +208,8 @@ sub _first_context_formatter_for_carrier {
     my $context_formatter = first { $_->{type}->check($carrier) }
         $self->known_context_formatters;
     
-    croak "Unsupported carrier format [" . ref($context_formatter) . "]\n"
+    my $type = ref($carrier) || 'Scalar';
+    croak "Unsupported carrier format [$type]"
         unless defined $context_formatter;
     
     return $context_formatter
@@ -232,7 +241,7 @@ instance_method inject_context_into_hash_reference(
     Maybe[ SpanContext ]        $span_context = undef,
 ) :Return(HashRef) {};
 
-instance_method inject_context_into_array_reference(
+instance_method inject_context_into_http_headers(
     Object                      $carrier,
     Maybe[ SpanContext ]        $span_context = undef,
 ) :Return(InstanceOf['HTTP::Headers']) {

@@ -75,7 +75,7 @@ subtest "Finishing only once" => sub {
     ok $test_span->has_finished(),
         "... but has, after 'finish' has been called";
     
-    throws_ok {
+    warning_like {
         $test_span->finish( )
     } qr/Span has already been finished/,
         "... and can not 'finish' again";

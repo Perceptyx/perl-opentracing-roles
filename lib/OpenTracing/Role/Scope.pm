@@ -35,7 +35,7 @@ has on_close => (
 sub close {
     my $self = shift;
     
-    croak "Can't close an already closed scope"
+    carp "Can't close an already closed scope" and return $self
         if $self->closed;
     
     $self->_set_closed( !undef );

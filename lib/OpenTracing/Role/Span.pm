@@ -72,7 +72,7 @@ sub overwrite_operation_name {
 sub finish {
     my $self = shift;
     
-    croak "Span has already been finished"
+    carp "Span has already been finished" and return $self
         if $self->has_finished;
     
     my $epoch_timestamp = shift // epoch_floatingpoint();

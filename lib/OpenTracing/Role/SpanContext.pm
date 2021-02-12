@@ -87,7 +87,6 @@ sub clone_with {
 BEGIN {
 #   use Role::Tiny::With;
     with 'OpenTracing::Interface::SpanContext'
-        if $ENV{OPENTRACING_INTERFACE};
 }
 
 1;

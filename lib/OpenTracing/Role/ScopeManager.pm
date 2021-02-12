@@ -56,7 +56,6 @@ instance_method build_scope (
 BEGIN {
 #   use Role::Tiny::With;
     with 'OpenTracing::Interface::ScopeManager'
-        if $ENV{OPENTRACING_INTERFACE};
 }
 
 1;

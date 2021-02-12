@@ -73,7 +73,6 @@ sub DEMOLISH {
 BEGIN {
     use Role::Tiny::With;
     with 'OpenTracing::Interface::Scope'
-        if $ENV{OPENTRACING_INTERFACE};
 }
 
 

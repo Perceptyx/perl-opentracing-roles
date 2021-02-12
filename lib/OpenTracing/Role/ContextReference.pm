@@ -46,7 +46,6 @@ sub type_is_follows_from { $_[0]->reference_type eq FOLLOWS_FROM }
 
 BEGIN {
     with 'OpenTracing::Interface::ContextReference'
-        if $ENV{OPENTRACING_INTERFACE};
 }
 
 

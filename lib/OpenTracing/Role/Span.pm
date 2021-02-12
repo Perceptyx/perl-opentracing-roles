@@ -278,7 +278,6 @@ sub epoch_floatingpoint {
 BEGIN {
 #   use Role::Tiny::With;
     with 'OpenTracing::Interface::Span'
-        if $ENV{OPENTRACING_INTERFACE};
 }
 
 

@@ -268,7 +268,6 @@ instance_method build_context (
 BEGIN {
 #   use Role::Tiny::With;
     with 'OpenTracing::Interface::Tracer'
-        if $ENV{OPENTRACING_INTERFACE};
 }
 
 

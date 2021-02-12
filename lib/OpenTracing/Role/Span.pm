@@ -1,6 +1,6 @@
 package OpenTracing::Role::Span;
 
-our $VERSION = 'v0.84.0';
+our $VERSION = 'v0.85.0';
 
 
 

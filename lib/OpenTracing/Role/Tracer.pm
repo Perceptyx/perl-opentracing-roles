@@ -11,7 +11,7 @@ use Carp;
 use List::Util qw/first/;
 use OpenTracing::Types qw/ScopeManager Span SpanContext is_Span is_SpanContext/;
 use Ref::Util qw/is_plain_hashref/;
-use Role::Declare -lax;
+use Role::Declare::Should -lax;
 use Try::Tiny;
 use Types::Common::Numeric qw/PositiveOrZeroNum/;
 use Types::Standard qw/ArrayRef CodeRef Dict HashRef InstanceOf Maybe Object Str Undef/;

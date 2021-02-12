@@ -6,7 +6,7 @@ use Moo::Role;
 
 use Carp;
 use OpenTracing::Types qw/Scope Span assert_Scope/;
-use Role::Declare;
+use Role::Declare::Should;
 use Types::Standard qw/Bool CodeRef Dict Maybe/;
 
 # The chosen design is to have only 1 active scope and use callback to change

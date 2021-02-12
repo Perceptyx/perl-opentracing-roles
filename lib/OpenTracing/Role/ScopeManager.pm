@@ -3,6 +3,7 @@ package OpenTracing::Role::ScopeManager;
 our $VERSION = 'v0.84.0';
 
 use Moo::Role;
+use MooX::Should;
 
 use Carp;
 use OpenTracing::Types qw/Scope Span assert_Scope/;
@@ -17,7 +18,7 @@ use Types::Standard qw/Bool CodeRef Dict Maybe/;
 #
 has active_scope => (
     is => 'rwp',
-    isa => Scope,
+    should => Scope,
     init_arg => undef,
     reader => 'get_active_scope',
     writer => 'set_active_scope',

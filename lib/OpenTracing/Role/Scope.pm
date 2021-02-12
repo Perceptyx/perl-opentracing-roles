@@ -3,6 +3,7 @@ package OpenTracing::Role::Scope;
 our $VERSION = 'v0.84.0';
 
 use Moo::Role;
+use MooX::Should;
 
 use Carp;
 use OpenTracing::Types qw/Span/;
@@ -10,25 +11,25 @@ use Types::Standard qw/Bool CodeRef Maybe/;
 
 has span => (
     is => 'ro',
-    isa => Span,
+    should => Span,
     reader => 'get_span',
 );
 
 has finish_span_on_close => (
     is => 'ro',
-    isa => Bool,
+    should => Bool,
 );
 
 has closed => (
     is              => 'rwp',
-    isa             => Bool,
+    should          => Bool,
     init_arg        => undef,
     default         => !!undef,
 );
 
 has on_close => (
     is              => 'ro',
-    isa             => Maybe[CodeRef],
+    should          => Maybe[CodeRef],
     predicate       => 1,
 );
 

@@ -4,6 +4,7 @@ our $VERSION = 'v0.84.0';
 
 use Moo::Role;
 use MooX::HandlesVia;
+use MooX::Should;
 
 use Data::GUID;
 use Sub::Trigger::Lock;
@@ -11,7 +12,7 @@ use Types::Standard qw/HashRef Str/;
 
 has trace_id => (
     is              => 'rw',
-#   isa             => Uuid, # not restraints here, do so when consuming this
+#   should          => Uuid, # not restraints here, do so when consuming this
     init_arg        => undef,
     default         => sub { Data::GUID->new },
     trigger         => Lock,
@@ -19,7 +20,7 @@ has trace_id => (
 
 has span_id => (
     is              => 'rw',
-#   isa             => Uuid, # not restraints here, do so when consuming this
+#   should          => Uuid, # not restraints here, do so when consuming this
     init_arg        => undef,
     default         => sub { Data::GUID->new },
     trigger         => Lock,
@@ -27,7 +28,7 @@ has span_id => (
 
 has baggage_items => (
     is              => 'rwp',
-    isa             => HashRef[Str],
+    should          => HashRef[Str],
     handles_via     => 'Hash',
     handles         => {
 #       get_baggage_item => 'get',

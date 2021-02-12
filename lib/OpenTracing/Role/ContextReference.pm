@@ -5,6 +5,7 @@ our $VERSION = 'v0.84.0';
 use Moo::Role;
 use MooX::Enumeration;
 use MooX::ProtectedAttributes;
+use MooX::Should;
 
 use OpenTracing::Types qw/SpanContext/;
 use Types::Standard qw/Enum/;
@@ -14,12 +15,12 @@ use constant FOLLOWS_FROM => 'follows_from';
 
 protected_has reference_type => (
     is => 'ro',
-    isa => Enum[ CHILD_OF, FOLLOWS_FROM ],
+    should => Enum[ CHILD_OF, FOLLOWS_FROM ],
 );
 
 has referenced_context => (
     is => 'ro',
-    isa => SpanContext,
+    should => SpanContext,
     required => 1,
     reader => 'get_referenced_context',
 );

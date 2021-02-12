@@ -6,6 +6,7 @@ use syntax qw/maybe/;
 
 use Moo::Role;
 use MooX::HandlesVia;
+use MooX::Should;
 
 use Carp;
 use List::Util qw/first/;
@@ -21,7 +22,7 @@ our @CARP_NOT;
 
 has scope_manager => (
     is              => 'ro',
-    isa             => ScopeManager,
+    should          => ScopeManager,
     reader          => 'get_scope_manager',
     default => sub {
         require 'OpenTracing::Implementation::NoOp::ScopeManager';
@@ -167,7 +168,7 @@ use constant ContextFormatter => Dict[
 
 has context_formatters => (
     is          => 'rw',
-    isa         => ArrayRef[ContextFormatter],
+    should      => ArrayRef[ContextFormatter],
     handles_via => 'Array',
     handles     => {
         register_context_formatter  => 'unshift',

@@ -43,7 +43,7 @@ cmp_deeply(
 ok $test_obj->closed,
     "... and has now been closed";
 
-throws_ok {
+warning_like {
     $test_obj->close( )
 } qr/Can't close an already closed scope/,
     "... and can not close again";

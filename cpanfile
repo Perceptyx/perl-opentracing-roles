@@ -17,6 +17,7 @@ requires            "Types::Standard";
 requires            "Types::TypeTiny";
 
 on 'test' => sub {
+    requires            "Devel::StrictMode";
     requires            "Test::Deep", '>= 1.130';
     requires            "Test::Interface";
     requires            "Test::MockObject::Extends";

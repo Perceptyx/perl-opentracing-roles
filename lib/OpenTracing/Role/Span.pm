@@ -227,6 +227,8 @@ sub get_parent_span_id {
 
 
 
+sub is_root_span { ! shift->get_parent_span_id() }
+
 # _set_context
 #
 # you really shouldn't change the context yourself, only on instantiation

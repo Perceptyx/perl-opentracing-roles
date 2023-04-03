@@ -3,3 +3,11 @@
 /local
 *.gz
 *.old
+
+MYMETA.*
+Makefile
+OpenTracing-Role-*/
+blib/
+cover_db/
+pm_to_blib
+
